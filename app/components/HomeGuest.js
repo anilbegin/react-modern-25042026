@@ -115,7 +115,7 @@ function HomeGuest() {
         </div>
       </section>
       { /** START - Why we exist section /* a short summary from About-us page  */  }
-      <section className="py-5">
+      <section className="py-5" id="bottom">
         <div className="container text-center">
 
           <div className="mb-3 about-content-icon">

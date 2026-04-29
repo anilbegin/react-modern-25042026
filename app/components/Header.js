@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useState} from "react"
 import { Link } from "react-router-dom"
 
 import HeaderLoggedIn from "./HeaderLoggedIn"
@@ -14,7 +14,9 @@ function Header(props) {
             <i className="fas fa-feather-alt"></i>
           </Link>
         </h4>
-        {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={props.setLoggedIn} />}
+        {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : 
+                          <HeaderLoggedOut setLoggedIn={props.setLoggedIn} 
+                                           onOpenModal={props.onOpenModal}/>}
       </div>
     </header>
   )
