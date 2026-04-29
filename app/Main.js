@@ -27,9 +27,8 @@ function Main() {
         <Route path='/about' element={<About />} />
         <Route path='/terms' element={<Terms />} />
       </Routes>
-      <LoginModal 
-        show={showModal} 
-        onClose={() => setShowModal(false)} 
+      <LoginModal show={showModal} onClose={() => setShowModal(false)}
+        setLoggedIn={setLoggedIn} 
       />
       <Footer />
     </BrowserRouter>

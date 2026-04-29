@@ -1,6 +1,25 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import Axios from 'axios'
 
-function LoginModal({ show, onClose }) {
+function LoginModal({ show, onClose, setLoggedIn }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  async function handleLogin(e) {
+    e.preventDefault()
+    try {
+      const response = await Axios.post('/login', {username, password})
+      if(response.data) {
+        setLoggedIn(true)
+        onClose()
+      } else {
+        alert('Invalid Username/Password')
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // ESC key close
   useEffect(() => {
     function handleEsc(e) {
@@ -32,16 +51,12 @@ function LoginModal({ show, onClose }) {
 
         <h3 className="mb-3">Sign In</h3>
 
-        <form>
-          <input autoFocus
-            type="text"
-            placeholder="Username"
+        <form onSubmit={handleLogin}>
+          <input onChange={e => setUsername(e.target.value)} autoFocus type="text" placeholder="Username"
             className="form-control mb-2"
           />
 
-          <input
-            type="password"
-            placeholder="Password"
+          <input onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"
             className="form-control mb-3"
           />
 
