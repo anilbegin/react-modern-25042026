@@ -14,25 +14,35 @@ import LoginModal from './components/LoginModal'
 import Footer from './components/Footer'
 import About from './components/About'
 import Terms from './components/Terms'
+import ExampleContext from './ExampleContext'
 
 function Main() {
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem('xToken')))
   // login modal
   const [showModal, setShowModal] = useState(false)
+
+  function openModal() {
+    setShowModal(true)
+  }
+
+  function closeModal() {
+    setShowModal(false)
+  }
+
   return (
-    <BrowserRouter>
-    <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}
-            onOpenModal={() => setShowModal(true)} />
-      <Routes>
-        <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/terms' element={<Terms />} />
-      </Routes>
-      <LoginModal show={showModal} onClose={() => setShowModal(false)}
-        setLoggedIn={setLoggedIn} 
-      />
-      <Footer />
-    </BrowserRouter>
+    <ExampleContext.Provider 
+      value={{loggedIn, setLoggedIn, showModal, openModal, closeModal}}>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/terms' element={<Terms />} />
+        </Routes>
+        <LoginModal />
+        <Footer />
+      </BrowserRouter>
+    </ExampleContext.Provider>
   )
 }
 

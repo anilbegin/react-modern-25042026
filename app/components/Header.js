@@ -1,10 +1,12 @@
-import React,{useState} from "react"
+import React,{useState, useContext} from "react"
 import { Link } from "react-router-dom"
 
 import HeaderLoggedIn from "./HeaderLoggedIn"
 import HeaderLoggedOut from "./HeaderLoggedOut"
+import ExampleContext from "../ExampleContext"
 
-function Header(props) {
+function Header() {
+  const appState = useContext(ExampleContext)
   return (
     <header className="header-bar" id="top">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
@@ -14,9 +16,7 @@ function Header(props) {
             <i className="fas fa-feather-alt"></i>
           </Link>
         </h4>
-        {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : 
-                          <HeaderLoggedOut setLoggedIn={props.setLoggedIn} 
-                                           onOpenModal={props.onOpenModal}/>}
+        {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
       </div>
     </header>
   )

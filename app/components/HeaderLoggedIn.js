@@ -1,11 +1,14 @@
-import React from "react"
+import React, {useContext} from "react"
+import ExampleContext from "../ExampleContext"
 
 function HeaderLoggedIn(props) {
+  const appState = useContext(ExampleContext)
+
   function handleLogout() {
     localStorage.removeItem('xAvatar')
     localStorage.removeItem('xToken')
     localStorage.removeItem('xUsername')
-    props.setLoggedIn(false)
+    appState.setLoggedIn(false)
   }
 
   return (
