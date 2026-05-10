@@ -24,7 +24,7 @@ function HeaderLoggedOut(props) {
     
   }
   return (
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-center guest my-3 my-md-0">
         <a href="#bottom" className="btn btn-link text-white mr-3">About</a>
         <button onClick={props.onOpenModal} className="btn btn-outline-light mr-2">
           Sign In
