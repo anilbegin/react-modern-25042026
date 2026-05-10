@@ -11,6 +11,10 @@ function LoginModal({ show, onClose, setLoggedIn }) {
       const response = await Axios.post('/login', {username, password})
       if(response.data) {
         setLoggedIn(true)
+      //  console.log(response.data)
+        localStorage.setItem('xAvatar', response.data.avatar)
+        localStorage.setItem('xToken', response.data.token)
+        localStorage.setItem('xUsername', response.data.username)
         onClose()
       } else {
         alert('Invalid Username/Password')

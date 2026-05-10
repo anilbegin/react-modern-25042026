@@ -16,7 +16,7 @@ import About from './components/About'
 import Terms from './components/Terms'
 
 function Main() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem('xToken')))
   // login modal
   const [showModal, setShowModal] = useState(false)
   return (
@@ -24,7 +24,7 @@ function Main() {
     <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}
             onOpenModal={() => setShowModal(true)} />
       <Routes>
-        <Route path='/' element={<HomeGuest />} />
+        <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
         <Route path='/about' element={<About />} />
         <Route path='/terms' element={<Terms />} />
       </Routes>
