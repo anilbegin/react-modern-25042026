@@ -118,7 +118,7 @@ function HomeGuest() {
       <section className="py-5" id="bottom">
         <div className="container text-center">
 
-          <div className="mb-3 about-content-icon">
+          <div className="mb-3 generic-logo-size">
             <i className="fas fa-feather-alt"></i>
           </div>
 

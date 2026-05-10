@@ -9,7 +9,7 @@ function About() {
       <div className="container container--narrow">
         <div className="modern-card no-hover text-center">
 
-          <div className="mb-3 about-content-icon">
+          <div className="mb-3 generic-logo-size">
             <i className="fas fa-feather-alt"></i>
           </div>
 
