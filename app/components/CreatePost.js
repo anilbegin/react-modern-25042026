@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import Page from './Page'
 
 function CreatePost() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
-  
+  const navigate = useNavigate()
+
   async function handlePost(e) {
     e.preventDefault()
     try {
@@ -14,7 +16,11 @@ function CreatePost() {
         body : body,
         token: localStorage.getItem('xToken')
       })
-      console.log(response)
+      console.log(response.data) // id of the new post
+      if(response.data) {
+        console.log('Post created successfully')  
+        navigate(`/post/${response.data}`)
+      }
     } catch (e) {
       console.log(e)
     }

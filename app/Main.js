@@ -12,6 +12,7 @@ import HeaderLoggedIn from './components/HeaderLoggedIn'
 import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
 import CreatePost from './components/CreatePost'
+import ViewSinglePost from './components/ViewSinglePost'
 import Footer from './components/Footer'
 import About from './components/About'
 import Terms from './components/Terms'
@@ -38,6 +39,7 @@ function Main() {
         <Routes>
           <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
           <Route path='/create-post' element={<CreatePost />} />
+          <Route path='/post/:id' element={<ViewSinglePost />} />
           <Route path='/about' element={<About />} />
           <Route path='/terms' element={<Terms />} />
         </Routes>
