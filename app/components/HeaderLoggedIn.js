@@ -1,4 +1,5 @@
 import React, {useContext} from "react"
+import { Link } from "react-router-dom"
 import ExampleContext from "../ExampleContext"
 
 function HeaderLoggedIn(props) {
@@ -23,9 +24,9 @@ function HeaderLoggedIn(props) {
           <a href="#" className="mr-2">
             <img className="small-header-avatar" src="https://gravatar.com/avatar/bbf83f8935b4d8c70600975d96ac33b9?s=128" />
           </a>
-          <a className="btn btn-sm btn-success mr-2" href="/create-post">
+          <Link className="btn btn-sm btn-success mr-2" to ="/create-post">
             Create Post
-          </a>
+          </Link>
           <button onClick={handleLogout} className="btn btn-sm btn-secondary">
             Sign Out
           </button>

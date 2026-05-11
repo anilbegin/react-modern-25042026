@@ -1,5 +1,5 @@
 import React from "react"
-
+import { Link } from "react-router-dom"
 import Page from "./Page"
 
 function Home() {
@@ -18,9 +18,9 @@ function Home() {
             <a href="#" className="btn btn-success mr-2">
              <i className="fas fa-search mr-1"></i> Search Posts
             </a>
-            <a href="create-post.html" className="btn btn-outline-secondary mt-2 mt-md-0">
+            <Link to="/create-post" className="btn btn-outline-secondary mt-2 mt-md-0">
               <i className="fas fa-pen mr-1"></i> Write Your First Post
-            </a>
+            </Link>
           </div>
         </div>  
       </div>
