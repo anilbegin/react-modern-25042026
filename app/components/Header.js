@@ -5,7 +5,7 @@ import HeaderLoggedIn from "./HeaderLoggedIn"
 import HeaderLoggedOut from "./HeaderLoggedOut"
 import ExampleContext from "../ExampleContext"
 
-function Header() {
+function Header(props) {
   const appState = useContext(ExampleContext)
   return (
     <header className="header-bar" id="top">
@@ -16,7 +16,7 @@ function Header() {
             <i className="fas fa-feather-alt"></i>
           </Link>
         </h4>
-        {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+        {appState.loggedIn ? <HeaderLoggedIn addFlashMessage={props.addFlashMessage} /> : <HeaderLoggedOut />}
       </div>
     </header>
   )

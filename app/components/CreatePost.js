@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import Page from './Page'
 
-function CreatePost() {
+function CreatePost(props) {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ function CreatePost() {
       })
       console.log(response.data) // id of the new post
       if(response.data) {
-        console.log('Post created successfully')  
+        props.addFlashMessage('New Post Created!')  
         navigate(`/post/${response.data}`)
       }
     } catch (e) {

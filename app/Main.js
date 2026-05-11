@@ -13,6 +13,7 @@ import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
 import CreatePost from './components/CreatePost'
 import ViewSinglePost from './components/ViewSinglePost'
+import FlashMessages from './components/FlashMessages'
 import Footer from './components/Footer'
 import About from './components/About'
 import Terms from './components/Terms'
@@ -20,13 +21,17 @@ import ExampleContext from './ExampleContext'
 
 function Main() {
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem('xToken')))
+  const [flashMessage, setFlashMessage] = useState([])
   // login modal
   const [showModal, setShowModal] = useState(false)
+
+  function addFlashMessage(msg) {
+    setFlashMessage(prev => prev.concat(msg))
+  }
 
   function openModal() {
     setShowModal(true)
   }
-
   function closeModal() {
     setShowModal(false)
   }
@@ -35,15 +40,16 @@ function Main() {
     <ExampleContext.Provider 
       value={{loggedIn, setLoggedIn, showModal, openModal, closeModal}}>
       <BrowserRouter>
-        <Header />
+        <Header addFlashMessage={addFlashMessage} />
+        <FlashMessages messages={flashMessage} />
         <Routes>
           <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
-          <Route path='/create-post' element={<CreatePost />} />
+          <Route path='/create-post' element={<CreatePost addFlashMessage={addFlashMessage} />} />
           <Route path='/post/:id' element={<ViewSinglePost />} />
           <Route path='/about' element={<About />} />
           <Route path='/terms' element={<Terms />} />
         </Routes>
-        <LoginModal />
+        <LoginModal addFlashMessage={addFlashMessage} />
         <Footer />
       </BrowserRouter>
     </ExampleContext.Provider>

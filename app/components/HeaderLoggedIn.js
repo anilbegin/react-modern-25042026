@@ -9,6 +9,7 @@ function HeaderLoggedIn(props) {
     localStorage.removeItem('xAvatar')
     localStorage.removeItem('xToken')
     localStorage.removeItem('xUsername')
+    props.addFlashMessage('You have Logged Out!')
     appState.setLoggedIn(false)
   }
 
