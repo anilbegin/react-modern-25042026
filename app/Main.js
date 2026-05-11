@@ -38,18 +38,18 @@ function Main() {
 
   return (
     <ExampleContext.Provider 
-      value={{loggedIn, setLoggedIn, showModal, openModal, closeModal}}>
+      value={{loggedIn, setLoggedIn, showModal, openModal, closeModal, addFlashMessage}}>
       <BrowserRouter>
-        <Header addFlashMessage={addFlashMessage} />
+        <Header />
         <FlashMessages messages={flashMessage} />
         <Routes>
           <Route path='/' element={loggedIn ? <Home /> : <HomeGuest />} />
-          <Route path='/create-post' element={<CreatePost addFlashMessage={addFlashMessage} />} />
+          <Route path='/create-post' element={<CreatePost />} />
           <Route path='/post/:id' element={<ViewSinglePost />} />
           <Route path='/about' element={<About />} />
           <Route path='/terms' element={<Terms />} />
         </Routes>
-        <LoginModal addFlashMessage={addFlashMessage} />
+        <LoginModal />
         <Footer />
       </BrowserRouter>
     </ExampleContext.Provider>

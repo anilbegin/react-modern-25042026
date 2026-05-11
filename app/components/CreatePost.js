@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import Page from './Page'
+import ExampleContext from '../ExampleContext'
 
-function CreatePost(props) {
+function CreatePost() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+  const appState = useContext(ExampleContext)
   const navigate = useNavigate()
 
   async function handlePost(e) {
@@ -18,7 +20,7 @@ function CreatePost(props) {
       })
       console.log(response.data) // id of the new post
       if(response.data) {
-        props.addFlashMessage('New Post Created!')  
+        appState.addFlashMessage('New Post Created!')  
         navigate(`/post/${response.data}`)
       }
     } catch (e) {

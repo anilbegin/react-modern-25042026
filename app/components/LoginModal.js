@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react"
 import Axios from 'axios'
 import ExampleContext from "../ExampleContext"
 
-function LoginModal(props) {
+function LoginModal() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const appState = useContext(ExampleContext)
@@ -17,7 +17,7 @@ function LoginModal(props) {
         localStorage.setItem('xAvatar', response.data.avatar)
         localStorage.setItem('xToken', response.data.token)
         localStorage.setItem('xUsername', response.data.username)
-        props.addFlashMessage('Congrats, you logged in successfully!')
+        appState.addFlashMessage('Congrats, you logged in successfully!')
         appState.closeModal()
       } else {
         alert('Invalid Username/Password')
