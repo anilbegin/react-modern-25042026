@@ -1,24 +1,26 @@
 import React, { useEffect, useState, useContext } from "react"
 import Axios from 'axios'
-import ExampleContext from "../ExampleContext"
+import DispatchContext from "../DispatchContext"
+import StateContext from "../StateContext"
 
 function LoginModal() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const appState = useContext(ExampleContext)
+  const appDispatch = useContext(DispatchContext)
+  const appState = useContext(StateContext)
 
   async function handleLogin(e) {
     e.preventDefault()
     try {
       const response = await Axios.post('/login', {username, password})
       if(response.data) {
-        appState.setLoggedIn(true)
+        appDispatch({type: 'login'})
       //  console.log(response.data)
         localStorage.setItem('xAvatar', response.data.avatar)
         localStorage.setItem('xToken', response.data.token)
         localStorage.setItem('xUsername', response.data.username)
-        appState.addFlashMessage('Congrats, you logged in successfully!')
-        appState.closeModal()
+        appDispatch({type: 'flashMessage', value: 'You logged in successfully!'})
+        appDispatch({type: 'closeModal'})
       } else {
         alert('Invalid Username/Password')
       }
@@ -30,7 +32,7 @@ function LoginModal() {
   // ESC key close
   useEffect(() => {
     function handleEsc(e) {
-      if (e.key === "Escape") appState.closeModal()
+      if (e.key === "Escape") appDispatch({type: 'closeModal'})
     }
 
     if (appState.showModal) {
@@ -42,17 +44,17 @@ function LoginModal() {
       document.removeEventListener("keydown", handleEsc)
       document.body.style.overflow = "auto"
     }
-  }, [appState.showModal, appState.closeModal])
+  }, [appState.showModal])
 
   if (!appState.showModal) return null
 
   return (
-    <div className="modal-overlay" onClick={appState.closeModal}>
+    <div className="modal-overlay" onClick={() => appDispatch({type: 'closeModal'})}>
       <div
         className="modal-content"
         onClick={(e) => e.stopPropagation()} // prevent close when clicking inside
       >
-        <button className="modal-close" onClick={appState.closeModal}>
+        <button className="modal-close" onClick={() => appDispatch({type: 'closeModal'})}>
           &times;
         </button>
 

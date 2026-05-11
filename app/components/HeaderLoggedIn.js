@@ -1,16 +1,16 @@
 import React, {useContext} from "react"
 import { Link } from "react-router-dom"
-import ExampleContext from "../ExampleContext"
+import DispatchContext from "../DispatchContext"
 
 function HeaderLoggedIn() {
-  const appState = useContext(ExampleContext)
+  const appDispatch = useContext(DispatchContext)
 
   function handleLogout() {
     localStorage.removeItem('xAvatar')
     localStorage.removeItem('xToken')
     localStorage.removeItem('xUsername')
-    appState.addFlashMessage('You have Logged Out!')
-    appState.setLoggedIn(false)
+    appDispatch({type: 'flashMessage', value: 'You have logged out.'})
+    appDispatch({type: 'logout'})
   }
 
   return (

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 
 import HeaderLoggedIn from "./HeaderLoggedIn"
 import HeaderLoggedOut from "./HeaderLoggedOut"
-import ExampleContext from "../ExampleContext"
+import StateContext from "../StateContext"
 
 function Header() {
-  const appState = useContext(ExampleContext)
+  const appState = useContext(StateContext)
   return (
     <header className="header-bar" id="top">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
