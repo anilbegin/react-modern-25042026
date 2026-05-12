@@ -7,7 +7,7 @@ import ExampleContext from '../ExampleContext'
 function CreatePost() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
-  const appState = useContext(ExampleContext)
+  const { addFlashMessage } = useContext(ExampleContext)
   const navigate = useNavigate()
 
   async function handlePost(e) {
@@ -20,7 +20,7 @@ function CreatePost() {
       })
       console.log(response.data) // id of the new post
       if(response.data) {
-        appState.addFlashMessage('New Post Created!')  
+        addFlashMessage('New Post Created!')  
         navigate(`/post/${response.data}`)
       }
     } catch (e) {

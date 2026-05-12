@@ -3,14 +3,14 @@ import { Link } from "react-router-dom"
 import ExampleContext from "../ExampleContext"
 
 function HeaderLoggedIn() {
-  const appState = useContext(ExampleContext)
+  const { addFlashMessage, setLoggedIn } = useContext(ExampleContext)
 
   function handleLogout() {
     localStorage.removeItem('xAvatar')
     localStorage.removeItem('xToken')
     localStorage.removeItem('xUsername')
-    appState.addFlashMessage('You have Logged Out!')
-    appState.setLoggedIn(false)
+    addFlashMessage('You have Logged Out!')
+    setLoggedIn(false)
   }
 
   return (

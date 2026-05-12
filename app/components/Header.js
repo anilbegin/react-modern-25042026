@@ -6,7 +6,7 @@ import HeaderLoggedOut from "./HeaderLoggedOut"
 import ExampleContext from "../ExampleContext"
 
 function Header() {
-  const appState = useContext(ExampleContext)
+  const { loggedIn } = useContext(ExampleContext)
   return (
     <header className="header-bar" id="top">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
@@ -16,7 +16,7 @@ function Header() {
             <i className="fas fa-feather-alt"></i>
           </Link>
         </h4>
-        {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+        {loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
       </div>
     </header>
   )

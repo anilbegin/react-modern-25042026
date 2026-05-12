@@ -5,20 +5,20 @@ import ExampleContext from "../ExampleContext"
 function LoginModal() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const appState = useContext(ExampleContext)
-
+  const { addFlashMessage, showModal, closeModal, setLoggedIn } = useContext(ExampleContext)
+  
   async function handleLogin(e) {
     e.preventDefault()
     try {
       const response = await Axios.post('/login', {username, password})
       if(response.data) {
-        appState.setLoggedIn(true)
+        setLoggedIn(true)
       //  console.log(response.data)
         localStorage.setItem('xAvatar', response.data.avatar)
         localStorage.setItem('xToken', response.data.token)
         localStorage.setItem('xUsername', response.data.username)
-        appState.addFlashMessage('Congrats, you logged in successfully!')
-        appState.closeModal()
+        addFlashMessage('Congrats, you logged in successfully!')
+        closeModal()
       } else {
         alert('Invalid Username/Password')
       }
@@ -30,10 +30,10 @@ function LoginModal() {
   // ESC key close
   useEffect(() => {
     function handleEsc(e) {
-      if (e.key === "Escape") appState.closeModal()
+      if (e.key === "Escape") closeModal()
     }
 
-    if (appState.showModal) {
+    if (showModal) {
       document.addEventListener("keydown", handleEsc)
       document.body.style.overflow = "hidden" // prevent scroll
     }
@@ -42,17 +42,17 @@ function LoginModal() {
       document.removeEventListener("keydown", handleEsc)
       document.body.style.overflow = "auto"
     }
-  }, [appState.showModal, appState.closeModal])
+  }, [showModal, closeModal])
 
-  if (!appState.showModal) return null
+  if (!showModal) return null
 
   return (
-    <div className="modal-overlay" onClick={appState.closeModal}>
+    <div className="modal-overlay" onClick={closeModal}>
       <div
         className="modal-content"
         onClick={(e) => e.stopPropagation()} // prevent close when clicking inside
       >
-        <button className="modal-close" onClick={appState.closeModal}>
+        <button className="modal-close" onClick={closeModal}>
           &times;
         </button>
 
