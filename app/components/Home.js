@@ -1,8 +1,11 @@
-import React from "react"
+import React,{useContext, useReducer} from "react"
 import { Link } from "react-router-dom"
 import Page from "./Page"
 
+import StateContext from "../StateContext"
+
 function Home() {
+  const appState = useContext(StateContext)
   return (
     <Page title='Homepage'>
       <main className="py-5 behind">
@@ -11,7 +14,7 @@ function Home() {
           <div className="mb-3 generic-logo-size">
             <i className="fas fa-inbox"></i>
           </div>
-          <h2 className="text-center mb-3">Hello <strong>anil</strong>, your feed is empty.</h2>
+          <h2 className="text-center mb-3">Hello <strong>{appState.user.username}</strong>, your feed is empty.</h2>
           <p className="lead text-muted text-center mx-auto">Your feed displays the latest posts from the people you follow. If you don&rsquo;t have any friends to follow that&rsquo;s okay; you can use the &ldquo;Search&rdquo; feature in the top menu bar to find content written by people with similar interests and then follow them.</p>
           { /** new actions */ } 
           <div className="mt-4">

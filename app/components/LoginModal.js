@@ -14,11 +14,8 @@ function LoginModal() {
     try {
       const response = await Axios.post('/login', {username, password})
       if(response.data) {
-        appDispatch({type: 'login'})
+        appDispatch({type: 'login', data: response.data})
       //  console.log(response.data)
-        localStorage.setItem('xAvatar', response.data.avatar)
-        localStorage.setItem('xToken', response.data.token)
-        localStorage.setItem('xUsername', response.data.username)
         appDispatch({type: 'flashMessage', value: 'You logged in successfully!'})
         appDispatch({type: 'closeModal'})
       } else {

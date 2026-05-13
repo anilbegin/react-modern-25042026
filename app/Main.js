@@ -1,4 +1,4 @@
-import React, {useState, useReducer} from 'react'
+import React, {useState, useReducer, useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Axios from 'axios'
@@ -24,6 +24,11 @@ import DispatchContext from './DispatchContext'
 function Main() {
   const initalState = {
     loggedIn : Boolean(localStorage.getItem('xToken')),
+    user : {
+      avatar : localStorage.getItem('xAvatar'),
+      token : localStorage.getItem('xToken'),
+      username : localStorage.getItem('xUsername')
+    },
     flashMessages : [],
     showModal : false
   }
@@ -34,6 +39,7 @@ function Main() {
     switch (action.type) {
       case 'login' :
         draft.loggedIn = true
+        draft.user = action.data
         return
       case 'logout' :
         draft.loggedIn = false
@@ -49,6 +55,18 @@ function Main() {
         return 
     }
   }
+
+  useEffect(() => {
+    if(state.loggedIn) {
+      localStorage.setItem('xAvatar', state.user.avatar)
+      localStorage.setItem('xToken', state.user.token)
+      localStorage.setItem('xUsername', state.user.username)
+    } else {
+      localStorage.removeItem('xAvatar')
+      localStorage.removeItem('xToken')
+      localStorage.removeItem('xUsername')
+    }
+  } , [state.loggedIn])
 
   return (
     <StateContext.Provider value={state}>
