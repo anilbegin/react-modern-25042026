@@ -2,6 +2,7 @@ import React, {useState, useReducer} from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Axios from 'axios'
+import { useImmerReducer } from 'use-immer'
 Axios.defaults.baseURL = 'http://localhost:8080'
 
 // my components
@@ -27,45 +28,29 @@ function Main() {
     showModal : false
   }
 
-  const [state, dispatch] = useReducer(ourReducer, initalState)
+  const [state, dispatch] = useImmerReducer(ourReducer, initalState)
 
-  function ourReducer(state, action) {
+  function ourReducer(draft, action) {
     switch (action.type) {
       case 'login' :
-        return  { 
-          loggedIn: true, 
-          flashMessages: state.flashMessages, 
-          showModal: state.showModal 
-        }
+        draft.loggedIn = true
+        return
       case 'logout' :
-        return {
-          loggedIn: false,
-          flashMessages: state.flashMessages,
-          showModal: state.showModal
-        }
+        draft.loggedIn = false
+        return
       case 'flashMessage' :
-        return {
-          loggedIn: state.loggedIn,
-          flashMessages: state.flashMessages.concat(action.value),
-          showModal: state.showModal
-        }
+        draft.flashMessages.push(action.value)
+        return
       case 'openModal' :
-        return {
-          loggedIn: state.loggedIn,
-          flashMessages: state.flashMessages,
-          showModal: true
-        }
+        draft.showModal = true
+        return
       case 'closeModal' :
-        return {
-          loggedIn: state.loggedIn,
-          flashMessages: state.flashMessages,
-          showModal: false
-        }     
+        draft.showModal = false
+        return 
     }
   }
 
   return (
-  //  <ExampleContext.Provider value={{loggedIn, setLoggedIn, showModal, openModal, closeModal, addFlashMessage}}>
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>  
         <BrowserRouter>
