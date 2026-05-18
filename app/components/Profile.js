@@ -19,11 +19,13 @@ function Profile() {
   })
 
   useEffect(() => {
+    const ourRequest = new AbortController()
     async function loadProfile() {
       try {
         const response = await Axios.post(`/profile/${username}`, {
           token: appState.user.token
-        })
+        }, { signal : ourRequest.signal })
+
         if(response.data) {
         //  console.log(response.data)
           setProfileData(response.data)
@@ -35,6 +37,7 @@ function Profile() {
       }
     }
     loadProfile()
+    return () => ourRequest.abort()
   } , [])
 
   return (

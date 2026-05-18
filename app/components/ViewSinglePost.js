@@ -11,9 +11,12 @@ function ViewSinglePost() {
   const [post, setPost] = useState()
 
   useEffect(() => {
+    const ourRequest = new AbortController()
     async function fetchPost() {
       try {
-        const response = await Axios.get(`/post/${id}`)
+        const response = await Axios.get(`/post/${id}`, {
+          signal : ourRequest.signal
+        })
         if(response.data) {
           setPost(response.data)
           setIsLoading(false)
@@ -25,6 +28,8 @@ function ViewSinglePost() {
       }
     }
     fetchPost()
+    // cancelling Axios request
+    return () => ourRequest.abort() 
   } , [])
 
   if(isLoading) return (

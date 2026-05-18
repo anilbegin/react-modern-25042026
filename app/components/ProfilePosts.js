@@ -10,9 +10,12 @@ function ProfilePosts() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
+    const ourRequest = new AbortController()
     async function fetchPosts() {
       try {
-        const response = await Axios.get(`/profile/${username}/posts`)
+        const response = await Axios.get(`/profile/${username}/posts`, {
+          signal : ourRequest.signal
+        })
       //  console.log(response)
         if(response.data) {
           setIsLoading(false)
@@ -23,6 +26,7 @@ function ProfilePosts() {
       } 
     }
     fetchPosts()
+    return () => ourRequest.abort()
   } , [])
 
   if(isLoading) return <LoadingDotsIcon />
