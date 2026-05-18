@@ -1,15 +1,45 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
+import { useParams, Link } from "react-router-dom"
+import Axios from 'axios'
 
+import LoadingDotsIcon from "./LoadingDotsIcon"
 import Page from "./Page"
 
 function ViewSinglePost() {
+  const { id } = useParams()
+  const [isLoading, setIsLoading] = useState(true)
+  const [post, setPost] = useState()
+
+  useEffect(() => {
+    async function fetchPost() {
+      const response = await Axios.get(`/post/${id}`)
+      console.log(response)
+      if(response.data) {
+        setPost(response.data)
+        setIsLoading(false)
+      } else {
+        console.log('There was a problem')
+      }
+    }
+    fetchPost()
+  } , [])
+
+  if(isLoading) return (
+    <Page title='...'>
+      <LoadingDotsIcon />
+    </Page>
+  )
+
+  const date = new Date(post.createdDate)
+  const dateFormatted = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+
   return (
-    <Page title = 'Post Title'>
+    <Page title = {post.title}>
       <main className="py-5 behind">
       <div className="container container--narrow py-md-5">
         <div className="content-card">
           <div className="d-flex justify-content-between">
-            <h2>Example Post Title</h2>
+            <h2>{post.title}</h2>
             {/** improvised UI section */}
             <div className="post-actions">
             {/**  Show only if current user is the author */}
@@ -23,15 +53,14 @@ function ViewSinglePost() {
             </div>
 
           <p className="text-muted small mb-4">
-            <a href="#">
-              <img className="avatar-tiny" src="https://gravatar.com/avatar/bbf83f8935b4d8c70600975d96ac33b9?s=128" />
-            </a>
-            Posted by <a href="#">anil</a> on 2/10/2025
+            <Link to={`/profile/${post.author.username}`}>
+              <img className="avatar-tiny" src={post.author.avatar} />
+            </Link>
+            Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {dateFormatted}
           </p>
 
           <div className="body-content">
-            <p>Lorem ipsum dolor sit <strong>example</strong> post adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quod asperiores corrupti omnis qui, placeat neque modi, dignissimos, ab exercitationem eligendi culpa explicabo nulla tempora rem? Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.</p>
+            {post.body}  
           </div>
        </div>
       </div>
