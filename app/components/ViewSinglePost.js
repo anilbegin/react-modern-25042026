@@ -12,13 +12,16 @@ function ViewSinglePost() {
 
   useEffect(() => {
     async function fetchPost() {
-      const response = await Axios.get(`/post/${id}`)
-      console.log(response)
-      if(response.data) {
-        setPost(response.data)
-        setIsLoading(false)
-      } else {
-        console.log('There was a problem')
+      try {
+        const response = await Axios.get(`/post/${id}`)
+        if(response.data) {
+          setPost(response.data)
+          setIsLoading(false)
+        } else {
+          console.log('There was a problem')
+        }
+      } catch (e) {
+        console.log(e)
       }
     }
     fetchPost()
