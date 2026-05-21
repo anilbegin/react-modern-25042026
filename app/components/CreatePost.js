@@ -1,6 +1,9 @@
 import React, {useState, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
+import SimpleMDE from "react-simplemde-editor"
+import "easymde/dist/easymde.min.css"
+
 import Page from './Page'
 import DispatchContext from '../DispatchContext'
 import StateContext from '../StateContext'
@@ -45,7 +48,8 @@ function CreatePost() {
               <label htmlFor="post-body" className="text-muted mb-1 d-block">
                 <small>Body Content</small>
               </label>
-              <textarea onChange={e => setBody(e.target.value)} name="body" id="post-body" className="body-content tall-textarea form-control" type="text"></textarea>
+            {/*  <textarea onChange={e => setBody(e.target.value)} name="body" id="post-body" className="body-content tall-textarea form-control" type="text"></textarea> */}
+              <SimpleMDE value={body} onChange={value => setBody(value)} />
             </div>
 
             <button className="btn btn-success">Save New Post</button>
