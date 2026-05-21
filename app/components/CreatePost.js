@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useMemo} from 'react'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import SimpleMDE from "react-simplemde-editor"
@@ -14,6 +14,30 @@ function CreatePost() {
   const appDispatch = useContext(DispatchContext)
   const appState = useContext(StateContext)
   const navigate = useNavigate()
+
+  // Optional: Configure the toolbar buttons
+  const editorOptions = useMemo(() => {
+    return {
+      autofocus: false,
+      spellChecker: false,
+      placeholder: "Type your post content here...",
+      toolbar : [
+        "bold",
+        "italic",
+        "heading",
+        "|",
+        "unordered-list",
+        "ordered-list",
+        "|",
+        "undo",
+        "redo"
+      ]
+    }
+  }, [])
+
+  // Choice of tools that can be added to the "toolbar" Array - below.
+  // "bold", "italic", "heading", "quote", "unordered-list", "ordered-list", "clean-block", 
+  // "link", "image", "table", "horizontal-rule", "preview", "side-by-side", "fullscreen", "guide".
 
   async function handlePost(e) {
     e.preventDefault()
@@ -49,9 +73,10 @@ function CreatePost() {
                 <small>Body Content</small>
               </label>
             {/*  <textarea onChange={e => setBody(e.target.value)} name="body" id="post-body" className="body-content tall-textarea form-control" type="text"></textarea> */}
-              <SimpleMDE value={body} onChange={value => setBody(value)} />
+              {/* <SimpleMDE value={body} onChange={setBody} /> // cleaner */}
+              <SimpleMDE value={body} onChange={value => setBody(value)} options={editorOptions} />
             </div>
-
+          
             <button className="btn btn-success">Save New Post</button>
           </form>
         </div>
