@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import { useParams, Link } from "react-router-dom"
 import Axios from 'axios'
 import ReactMarkdown from 'react-markdown'
+import { Tooltip } from "react-tooltip"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
 import Page from "./Page"
@@ -52,12 +53,14 @@ function ViewSinglePost() {
             {/** improvised UI section */}
             <div className="post-actions">
             {/**  Show only if current user is the author */}
-                <a href="#" className="action-btn action-edit mr-2" title="Edit">
+                <a href="#" data-tooltip-id="edit" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content='Edit'  className="action-btn action-edit mr-2">
                   <i className="fas fa-edit"></i>
                 </a>
-                <a href="#" className="action-btn action-delete" title="Delete">
+                <Tooltip id="edit" />
+                <a data-tooltip-id="delete" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content="Delete" href="#" className="action-btn action-delete">
                   <i className="fas fa-trash"></i>
                 </a>
+                <Tooltip id="delete" />
               </div>
             </div>
 

@@ -1,5 +1,6 @@
 import React, {useContext} from "react"
 import { Link } from "react-router-dom"
+import { Tooltip } from "react-tooltip"
 
 import DispatchContext from "../DispatchContext"
 import StateContext from "../StateContext"
@@ -15,16 +16,22 @@ function HeaderLoggedIn() {
 
   return (
       <div className="flex-row my-3 my-md-0">
-          <a href="#" className="text-white mr-2 header-search-icon">
+          <a data-tooltip-auto-close='2000' data-tooltip-id="search" data-tooltip-place="bottom-start" data-tooltip-offset="19" data-tooltip-content="Search" href="#" className="text-white mr-2 header-search-icon">
             <i className="fas fa-search"></i>
           </a>
-          <span className="mr-2 header-chat-icon text-danger">
+          <Tooltip id="search" />
+          {" "}
+          <span data-tooltip-auto-close='2000' data-tooltip-id="chat" data-tooltip-content="Chat" data-tooltip-place="bottom-start" data-tooltip-offset="19"  className="mr-2 header-chat-icon text-danger">
             <i className="fas fa-comment"></i>
             <span className="chat-count-badge text-white">3</span>
           </span>
-          <Link to={`/profile/${appState.user.username}`} className="mr-2">
+          <Tooltip id="chat" />
+          {" "}
+          <Link data-tooltip-auto-close='2000' data-tooltip-id="profile" data-tooltip-place="bottom-start" data-tooltip-offset="19" data-tooltip-content="My Profile" to={`/profile/${appState.user.username}`} className="mr-2">
             <img className="small-header-avatar" src={appState.user.avatar} />
           </Link>
+          <Tooltip id="profile" />
+          {" "}
           <Link className="btn btn-sm btn-success mr-2" to ="/create-post">
             Create Post
           </Link>
