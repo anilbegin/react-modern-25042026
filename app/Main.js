@@ -14,6 +14,7 @@ import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
 import CreatePost from './components/CreatePost'
 import ViewSinglePost from './components/ViewSinglePost'
+import EditPost from './components/EditPost'
 import Profile from './components/Profile'
 import FlashMessages from './components/FlashMessages'
 import Footer from './components/Footer'
@@ -79,6 +80,7 @@ function Main() {
             <Route path='/' element={state.loggedIn ? <Home /> : <HomeGuest />} />
             <Route path='/create-post' element={<CreatePost />} />
             <Route path='/post/:id' element={<ViewSinglePost />} />
+            <Route path='/post/:id/edit' element={<EditPost />} />
             <Route path='/profile/:username/*' element={<Profile />} />
             <Route path='/about' element={<About />} />
             <Route path='/terms' element={<Terms />} />

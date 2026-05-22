@@ -52,17 +52,17 @@ function ViewSinglePost() {
             <h2>{post.title}</h2>
             {/** improvised UI section */}
             <div className="post-actions">
-            {/**  Show only if current user is the author */}
-                <a href="#" data-tooltip-id="edit" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content='Edit'  className="action-btn action-edit mr-2">
+                {/**  Show only if current user is the author */}
+                <Link to={`/post/${post._id}/edit`} data-tooltip-id="edit" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content='Edit'  className="action-btn action-edit mr-2">
                   <i className="fas fa-edit"></i>
-                </a>
+                </Link>
                 <Tooltip id="edit" />
                 <a data-tooltip-id="delete" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content="Delete" href="#" className="action-btn action-delete">
                   <i className="fas fa-trash"></i>
                 </a>
                 <Tooltip id="delete" />
-              </div>
             </div>
+          </div>
 
           <p className="text-muted small mb-4">
             <Link to={`/profile/${post.author.username}`}>
