@@ -1,7 +1,9 @@
-import React, {useState, useEffect, useContext} from "react"
+import React, {useState, useEffect, useContext, useMemo} from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useImmerReducer } from "use-immer"
 import Axios from 'axios'
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
 import StateContext from "../StateContext"
@@ -111,6 +113,31 @@ function EditPost() {
     dispatch({type: "saveChanges"})
   }
 
+  // MARKDOWN TOOLBAR
+  // Optional: Configure the toolbar buttons
+  const editorOptions = useMemo(() => {
+      return {
+        autofocus: false,
+        spellChecker: false,
+        placeholder: "Type your post content here...",
+        toolbar : [
+          "bold",
+          "italic",
+          "heading",
+          "|",
+          "unordered-list",
+          "ordered-list",
+          "|",
+          "undo",
+          "redo"
+        ]
+      }
+    }, [])
+  
+    // Choice of tools that can be added to the "toolbar" Array - below.
+    // "bold", "italic", "heading", "quote", "unordered-list", "ordered-list", "clean-block", 
+    // "link", "image", "table", "horizontal-rule", "preview", "side-by-side", "fullscreen", "guide".
+
   if(state.isFetching) return (
     <Page title='...'>
       <LoadingDotsIcon />
@@ -133,7 +160,8 @@ function EditPost() {
               <label htmlFor="post-body" className="text-muted mb-1 d-block">
                 <small>Body Content</small>
               </label>
-              <textarea value={state.body.value} onChange={e => dispatch({type: "bodyChange", value: e.target.value})} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" />
+            {/*  <textarea value={state.body.value} onChange={e => dispatch({type: "bodyChange", value: e.target.value})} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" /> */}
+              <SimpleMDE value={state.body.value} onChange={value => dispatch({type: 'bodyChange', value: value})} options={editorOptions} name="body" id="post-body" className="body-content" />  
             </div>
             <button className="btn btn-success" disabled={state.isSaving}>{state.isSaving ? 'Saving' : 'Save Changes'}</button>
           </form>
