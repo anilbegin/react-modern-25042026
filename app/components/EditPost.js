@@ -119,6 +119,7 @@ function EditPost() {
       return {
         autofocus: false,
         spellChecker: false,
+        status: false, // line and word counter (on bottom right) disabled
         placeholder: "Type your post content here...",
         toolbar : [
           "bold",
@@ -153,7 +154,10 @@ function EditPost() {
               <label htmlFor="post-title" className="text-muted mb-1">
                 <small>Title</small>
               </label>
-              <input value={state.title.value} onChange={e => dispatch({type:"titleChange", value: e.target.value})} autoFocus name="title" id="post-title" className="form-control form-control-lg form-control-title" type="text" placeholder="" autoComplete="off" />
+              <input value={state.title.value} onChange={e => dispatch({type:"titleChange", value: e.target.value})} autoFocus name="title" id="post-title" className="form-control form-control-lg form-control-title is-invalid" type="text" placeholder="" autoComplete="off" />
+              <div className="invalid-feedback">
+                Title is invalid
+              </div>
             </div>
 
             <div className="form-group">
@@ -161,7 +165,24 @@ function EditPost() {
                 <small>Body Content</small>
               </label>
             {/*  <textarea value={state.body.value} onChange={e => dispatch({type: "bodyChange", value: e.target.value})} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" /> */}
-              <SimpleMDE value={state.body.value} onChange={value => dispatch({type: 'bodyChange', value: value})} options={editorOptions} name="body" id="post-body" className="body-content" />  
+            {/*  <SimpleMDE value={state.body.value} onChange={value => dispatch({type: 'bodyChange', value: value})} options={editorOptions} name="body" id="post-body" className="body-content" />  */}
+              <div className={!state.body.hasErrors ? "editor-invalid" : ""}>
+                <SimpleMDE
+                  value={state.body.value}
+                  onChange={value =>
+                    dispatch({ type: "bodyChange", value: value })
+                  }
+                  options={editorOptions}
+                  className="body-content"
+                />
+
+                {!state.body.hasErrors && (
+                  <div className="invalid-feedback d-block">
+                    Please enter body content
+                  </div>
+                )}
+              </div>
+              
             </div>
             <button className="btn btn-success" disabled={state.isSaving}>{state.isSaving ? 'Saving' : 'Save Changes'}</button>
           </form>

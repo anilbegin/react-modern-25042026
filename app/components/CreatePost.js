@@ -20,6 +20,7 @@ function CreatePost() {
     return {
       autofocus: false,
       spellChecker: false,
+      status: false, // line and word counter (on bottom right) disabled
       placeholder: "Type your post content here...",
       toolbar : [
         "bold",
