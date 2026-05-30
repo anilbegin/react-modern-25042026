@@ -48,7 +48,9 @@ function EditPost() {
         draft.body.value = action.value
         return
       case "saveChanges" :
-        draft.sendCount++
+        if(!draft.title.hasErrors && !draft.body.hasErrors) {
+          draft.sendCount++
+        }
         return
       case "saveRequestStarted" :
         draft.isSaving = true
@@ -60,6 +62,12 @@ function EditPost() {
         if(!action.value.trim()) {
           draft.title.hasErrors = true
           draft.title.message = "You must provide a title."
+        }
+        return
+      case "bodyRules" :
+        if(!draft.body.value.trim()) {
+          draft.body.hasErrors = true
+          draft.body.message = "Body field cannot be left blank."
         }
         return         
     }
@@ -185,13 +193,14 @@ function EditPost() {
                   onChange={value =>
                     dispatch({ type: "bodyChange", value: value })
                   }
+                  onBlur={() => dispatch({type: "bodyRules"})}
                   options={editorOptions}
                   className="body-content"
                 />
 
                 {state.body.hasErrors && (
                   <div className="invalid-feedback d-block">
-                    Please enter body content
+                    {state.body.message}
                   </div>
                 )}
               </div>
