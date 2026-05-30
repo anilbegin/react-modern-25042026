@@ -166,8 +166,13 @@ function EditPost() {
   return (
     <Page title='Edit Post'>
       <main className="py-5 behind">
+
+        
         <div className="container container--narrow py-md-5">
-          <form onSubmit={handleEdit}>
+          <Link className="small font-weight-bold" to={`/post/${state.id}`}>
+            &laquo; Back to post permalink
+          </Link>
+          <form className="mt-3" onSubmit={handleEdit}>
             <div className="form-group">
               <label htmlFor="post-title" className="text-muted mb-1">
                 <small>Title</small>
