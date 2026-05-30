@@ -55,7 +55,13 @@ function EditPost() {
         return
       case "saveRequestFinished" :
         draft.isSaving = false
-        return          
+        return   
+      case "titleRules" :
+        if(!action.value.trim()) {
+          draft.title.hasErrors = true
+          draft.title.message = "You must provide a title."
+        }
+        return         
     }
   }
     
@@ -154,19 +160,26 @@ function EditPost() {
               <label htmlFor="post-title" className="text-muted mb-1">
                 <small>Title</small>
               </label>
-              <input value={state.title.value} onChange={e => dispatch({type:"titleChange", value: e.target.value})} autoFocus name="title" id="post-title" className="form-control form-control-lg form-control-title is-invalid" type="text" placeholder="" autoComplete="off" />
-              <div className="invalid-feedback">
-                Title is invalid
-              </div>
+              <input value={state.title.value} 
+              onChange={e => dispatch({type:"titleChange", value: e.target.value})} 
+              onBlur={e => dispatch({type: "titleRules", value: e.target.value})}
+              autoFocus name="title" id="post-title" 
+              className={"form-control form-control-lg form-control-title " + 
+              (state.title.hasErrors ? "is-invalid" : "")} 
+              type="text" placeholder="" autoComplete="off" />
+              
+              {state.title.hasErrors && (
+                <div className="invalid-feedback">{state.title.message}</div>
+              )}
             </div>
 
             <div className="form-group">
               <label htmlFor="post-body" className="text-muted mb-1 d-block">
                 <small>Body Content</small>
               </label>
-            {/*  <textarea value={state.body.value} onChange={e => dispatch({type: "bodyChange", value: e.target.value})} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" /> */}
-            {/*  <SimpleMDE value={state.body.value} onChange={value => dispatch({type: 'bodyChange', value: value})} options={editorOptions} name="body" id="post-body" className="body-content" />  */}
-              <div className={!state.body.hasErrors ? "editor-invalid" : ""}>
+              {/*  <textarea value={state.body.value} onChange={e => dispatch({type: "bodyChange", value: e.target.value})} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" /> */}
+              {/*  <SimpleMDE value={state.body.value} onChange={value => dispatch({type: 'bodyChange', value: value})} options={editorOptions} name="body" id="post-body" className="body-content" />  */}
+              <div className={state.body.hasErrors ? "editor-invalid" : ""}>
                 <SimpleMDE
                   value={state.body.value}
                   onChange={value =>
@@ -176,7 +189,7 @@ function EditPost() {
                   className="body-content"
                 />
 
-                {!state.body.hasErrors && (
+                {state.body.hasErrors && (
                   <div className="invalid-feedback d-block">
                     Please enter body content
                   </div>
