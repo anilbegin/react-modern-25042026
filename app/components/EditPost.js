@@ -42,9 +42,11 @@ function EditPost() {
         draft.isFetching = false
         return
       case "titleChange" :
+        draft.title.hasErrors = false
         draft.title.value = action.value
         return
       case "bodyChange" :
+        draft.body.hasErrors = false
         draft.body.value = action.value
         return
       case "saveChanges" :
