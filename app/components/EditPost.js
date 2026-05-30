@@ -124,6 +124,8 @@ function EditPost() {
 
   function handleEdit(e) {
     e.preventDefault()
+    dispatch({type: "titleRules", value: state.title.value})
+    dispatch({type: "bodyRules"})
     dispatch({type: "saveChanges"})
   }
 
