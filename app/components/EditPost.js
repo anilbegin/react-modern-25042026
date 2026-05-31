@@ -9,6 +9,7 @@ import LoadingDotsIcon from "./LoadingDotsIcon"
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"
 import Page from "./Page"
+import NotFound from "./NotFound";
 
 function EditPost() {
   const appState = useContext(StateContext)
@@ -29,7 +30,8 @@ function EditPost() {
     isFetching: true, 
     isSaving: false,
     id: useParams().id,
-    sendCount: 0
+    sendCount: 0,
+    notFound: false
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
@@ -71,7 +73,10 @@ function EditPost() {
           draft.body.hasErrors = true
           draft.body.message = "Body field cannot be left blank."
         }
-        return         
+        return    
+      case "notFound" :
+        draft.notFound = true
+        return       
     }
   }
     
@@ -86,7 +91,7 @@ function EditPost() {
         if(response.data) {
           dispatch({type: 'fetchComplete', value: response.data})
         } else {
-          console.log('There was a problem')
+          dispatch({type: "notFound"})
         }
       } catch (e) {
         console.log(e)
@@ -156,7 +161,11 @@ function EditPost() {
     // Choice of tools that can be added to the "toolbar" Array - below.
     // "bold", "italic", "heading", "quote", "unordered-list", "ordered-list", "clean-block", 
     // "link", "image", "table", "horizontal-rule", "preview", "side-by-side", "fullscreen", "guide".
-
+  
+  if(state.notFound) {
+    return <NotFound />
+  }  
+    
   if(state.isFetching) return (
     <Page title='...'>
       <LoadingDotsIcon />
@@ -166,8 +175,6 @@ function EditPost() {
   return (
     <Page title='Edit Post'>
       <main className="py-5 behind">
-
-        
         <div className="container container--narrow py-md-5">
           <Link className="small font-weight-bold" to={`/post/${state.id}`}>
             &laquo; Back to post permalink
