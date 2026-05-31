@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import { Tooltip } from "react-tooltip"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
+import NotFound from "./NotFound"
 import Page from "./Page"
 
 function ViewSinglePost() {
@@ -19,12 +20,9 @@ function ViewSinglePost() {
         const response = await Axios.get(`/post/${id}`, {
           signal : ourRequest.signal
         })
-        if(response.data) {
-          setPost(response.data)
-          setIsLoading(false)
-        } else {
-          console.log('There was a problem')
-        }
+        console.log(response)
+        setPost(response.data)
+        setIsLoading(false)
       } catch (e) {
         console.log(e)
       }
@@ -34,6 +32,8 @@ function ViewSinglePost() {
     return () => ourRequest.abort() 
   } , [])
 
+  if(!post && !isLoading  ) return <NotFound />
+  
   if(isLoading) return (
     <Page title='...'>
       <LoadingDotsIcon />
