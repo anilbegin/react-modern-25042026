@@ -88,8 +88,13 @@ function EditPost() {
         const response = await Axios.get(`/post/${state.id}`, {
           signal : ourRequest.signal
         })
+      //  console.log(response)
         if(response.data) {
           dispatch({type: 'fetchComplete', value: response.data})
+          if(!appState.loggedIn || appState.user.username != response.data.author.username) {
+            appDispatch({type: 'flashMessage', value: 'You do not have permission!'})
+            navigate('/')
+          }        
         } else {
           dispatch({type: "notFound"})
         }
