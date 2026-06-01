@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import { useParams, Link } from "react-router-dom"
 import Axios from 'axios'
 import ReactMarkdown from 'react-markdown'
 import { Tooltip } from "react-tooltip"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
+import StateContext from "../StateContext"
 import NotFound from "./NotFound"
 import Page from "./Page"
 
 function ViewSinglePost() {
+  const appState = useContext(StateContext)
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [post, setPost] = useState()
@@ -43,6 +45,13 @@ function ViewSinglePost() {
   const date = new Date(post.createdDate)
   const dateFormatted = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
 
+  function isOwner() {
+    if(appState.loggedIn) {
+      return appState.user.username == post.author.username
+    }
+    return false
+  }
+
   return (
     <Page title = {post.title}>
       <main className="py-5 behind">
@@ -50,8 +59,8 @@ function ViewSinglePost() {
         <div className="content-card">
           <div className="d-flex justify-content-between">
             <h2>{post.title}</h2>
-            {/** improvised UI section */}
-            <div className="post-actions">
+            {isOwner() && (
+              <div className="post-actions">
                 {/**  Show only if current user is the author */}
                 <Link to={`/post/${post._id}/edit`} data-tooltip-id="edit" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content='Edit'  className="action-btn action-edit mr-2">
                   <i className="fas fa-edit"></i>
@@ -61,7 +70,8 @@ function ViewSinglePost() {
                   <i className="fas fa-trash"></i>
                 </a>
                 <Tooltip id="delete" />
-            </div>
+              </div>
+            )}
           </div>
 
           <p className="text-muted small mb-4">
