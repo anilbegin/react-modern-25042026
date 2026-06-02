@@ -48,7 +48,7 @@ function CreatePost() {
         body : body,
         token: appState.user.token
       })
-      console.log(response.data) // id of the new post
+      //console.log(response.data) // id of the new post
       if(response.data) {
         appDispatch({type: 'flashMessage', value: 'New Post Created.'})
         navigate(`/post/${response.data}`)
