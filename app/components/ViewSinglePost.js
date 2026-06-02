@@ -1,16 +1,19 @@
 import React, {useState, useEffect, useContext} from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import Axios from 'axios'
 import ReactMarkdown from 'react-markdown'
 import { Tooltip } from "react-tooltip"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
 import StateContext from "../StateContext"
+import DispatchContext from "../DispatchContext"
 import NotFound from "./NotFound"
 import Page from "./Page"
 
 function ViewSinglePost() {
   const appState = useContext(StateContext)
+  const appDispatch = useContext(DispatchContext)
+  const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [post, setPost] = useState()
@@ -22,7 +25,6 @@ function ViewSinglePost() {
         const response = await Axios.get(`/post/${id}`, {
           signal : ourRequest.signal
         })
-        console.log(response)
         setPost(response.data)
         setIsLoading(false)
       } catch (e) {
@@ -52,6 +54,24 @@ function ViewSinglePost() {
     return false
   }
 
+  async function deleteHandler() {
+    const areYouSure = window.confirm("Do you really want to delete this post ?")
+    if(areYouSure) {
+      try {
+        const response = await Axios.delete(`/post/${id}`, {data: {
+            token: appState.user.token
+          }
+        })
+        if(response.data == "Success") {
+          appDispatch({type: 'flashMessage', value: 'Post was successfully deleted.'})
+          navigate(`/profile/${appState.user.username}`)          
+        }
+      } catch (e) {
+        console.log("There was a problem.")
+      }
+    }
+  }
+
   return (
     <Page title = {post.title}>
       <main className="py-5 behind">
@@ -66,7 +86,7 @@ function ViewSinglePost() {
                   <i className="fas fa-edit"></i>
                 </Link>
                 <Tooltip id="edit" />
-                <a data-tooltip-id="delete" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content="Delete" href="#" className="action-btn action-delete">
+                <a onClick={deleteHandler} data-tooltip-id="delete" data-tooltip-place="top-start" data-tooltip-variant="dark" data-tooltip-content="Delete" href="#" className="action-btn action-delete">
                   <i className="fas fa-trash"></i>
                 </a>
                 <Tooltip id="delete" />
