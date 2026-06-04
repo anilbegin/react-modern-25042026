@@ -14,9 +14,14 @@ function HeaderLoggedIn() {
     appDispatch({type: 'logout'})
   }
 
+  function handleSearchIcon(e) {
+    e.preventDefault()
+    appDispatch({type: 'openSearch'})
+  }
+
   return (
       <div className="flex-row my-3 my-md-0">
-          <a data-tooltip-auto-close='2000' data-tooltip-id="search" data-tooltip-place="bottom-start" data-tooltip-offset="19" data-tooltip-content="Search" href="#" className="text-white mr-2 header-search-icon">
+          <a onClick={handleSearchIcon} data-tooltip-auto-close='2000' data-tooltip-id="search" data-tooltip-place="bottom-start" data-tooltip-offset="19" data-tooltip-content="Search" href="#" className="text-white mr-2 header-search-icon">
             <i className="fas fa-search"></i>
           </a>
           <Tooltip id="search" />

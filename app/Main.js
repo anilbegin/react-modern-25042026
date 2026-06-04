@@ -15,6 +15,7 @@ import LoginModal from './components/LoginModal'
 import CreatePost from './components/CreatePost'
 import ViewSinglePost from './components/ViewSinglePost'
 import EditPost from './components/EditPost'
+import Search from './components/Search'
 import NotFound from './components/NotFound'
 import Profile from './components/Profile'
 import FlashMessages from './components/FlashMessages'
@@ -33,7 +34,8 @@ function Main() {
       username : localStorage.getItem('xUsername')
     },
     flashMessages : [],
-    showModal : false
+    showModal : false,
+    isSearchOpen : false
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initalState)
@@ -56,6 +58,12 @@ function Main() {
       case 'closeModal' :
         draft.showModal = false
         return 
+      case 'openSearch' :
+        draft.isSearchOpen = true
+        return
+      case 'closeSearch' :
+        draft.isSearchOpen = false
+        return    
     }
   }
 
@@ -88,6 +96,7 @@ function Main() {
             <Route path='*' element={<NotFound />} />
           </Routes>
           <LoginModal />
+          {state.isSearchOpen ? <Search /> : ''}
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>  
