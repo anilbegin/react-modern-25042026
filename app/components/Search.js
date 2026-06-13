@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import {useImmer} from 'use-immer'
 import Axios from 'axios'
+import { Link } from 'react-router-dom'
 
 import DispatchContext from '../DispatchContext'
 
@@ -51,6 +52,7 @@ function Search() {
           }, {
             signal: ourRequest.signal
           })
+          //console.log(response.data)
           setState(draft => {
             draft.results = response.data
             draft.show = 'results'
@@ -101,19 +103,21 @@ function Search() {
             (state.show == 'results' ? "live-search-results--visible" : "")}>
 
             <div className="list-group shadow-sm">
-              <div className="list-group-item active"><strong>Search Results</strong> <span className="small">(3 items)</span></div>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/bbf83f8935b4d8c70600975d96ac33b9?s=128" /> <strong>Example Post #1</strong>
-                <span className="text-muted small">by anil on 12/01/2026 </span>
-              </a>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" /> <strong>Example Post #2</strong>
-                <span className="text-muted small">by barksalot on 22/01/2026 </span>
-              </a>
-              <a href="#" className="list-group-item list-group-item-action">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/bbf83f8935b4d8c70600975d96ac33b9?s=128" /> <strong>Example Post #3</strong>
-                <span className="text-muted small">by anil on 21/01/2026 </span>
-              </a>
+              <div className="list-group-item active"><strong>Search Results</strong> 
+                <span className="small">{' '}({state.results.length}{' '} 
+                  {state.results.length > 1 ? "items" : "item" } found)
+                </span>
+              </div>
+              {state.results.map(post => {
+                const date = new Date(post.createdDate)
+                const dateFormatted = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+                return (
+                  <Link onClick={() => appDispatch({type: 'closeSearch'})} key={post._id} to={`/post/${post._id}`} className="list-group-item list-group-item-action">
+                    <img className="avatar-tiny" src={post.author.avatar} /> <strong>{post.title}</strong>
+                    <span className="text-muted small">{" "}by {post.author.username} on {dateFormatted} </span>
+                  </Link>
+                  ) 
+              })}
             </div>
           </div>
         </div>
