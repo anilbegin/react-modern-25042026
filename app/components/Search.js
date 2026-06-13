@@ -31,7 +31,7 @@ function Search() {
        setState(draft => {
         draft.requestCount++
        })
-      }, 2000)
+      }, 800)
 
       return () => clearTimeout(delay)
     } else {
@@ -102,7 +102,8 @@ function Search() {
           <div className={"live-search-results " + 
             (state.show == 'results' ? "live-search-results--visible" : "")}>
 
-            <div className="list-group shadow-sm">
+            {Boolean(state.results.length) && 
+            (<div className="list-group shadow-sm">
               <div className="list-group-item active"><strong>Search Results</strong> 
                 <span className="small">{' '}({state.results.length}{' '} 
                   {state.results.length > 1 ? "items" : "item" } found)
@@ -118,7 +119,13 @@ function Search() {
                   </Link>
                   ) 
               })}
-            </div>
+            </div>)}
+            {!Boolean(state.results.length) && (
+              <p className='alert alert-danger text-center shadow-sm'>
+                Sorry, we could not find any results for that search.
+              </p>
+            )}
+            
           </div>
         </div>
       </div>
