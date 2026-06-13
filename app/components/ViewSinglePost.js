@@ -34,7 +34,7 @@ function ViewSinglePost() {
     fetchPost()
     // cancelling Axios request
     return () => ourRequest.abort() 
-  } , [])
+  } , [id])
 
   if(!post && !isLoading  ) return <NotFound />
   
