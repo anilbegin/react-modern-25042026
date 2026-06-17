@@ -27,7 +27,7 @@ function ProfilePosts() {
     }
     fetchPosts()
     return () => ourRequest.abort()
-  } , [])
+  } , [username])
 
   if(isLoading) return <LoadingDotsIcon />
 
