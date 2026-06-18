@@ -49,6 +49,17 @@ function Profile() {
     return () => ourRequest.abort()
   } , [username])
 
+  function showFollowButton() {
+    if(appState.loggedIn &&
+      appState.user.username != state.profileData.profileUsername &&
+      !state.profileData.isFollowing &&
+      state.profileData.profileUsername != '...'
+    ) {
+      return true
+    }
+    return false
+  }
+
   return (
     <Page title={state.profileData.profileUsername == '...' ?
      'Profile..' : appState.user.username == state.profileData.profileUsername ?
@@ -58,7 +69,11 @@ function Profile() {
           <div className="modern-card no-hover">
             <h2>
               <img className="avatar-small" src={state.profileData.profileAvatar} /> {state.profileData.profileUsername}
-              <button className="btn btn-primary btn-sm ml-2">Follow <i className="fas fa-user-plus"></i></button>
+              {showFollowButton() && (
+                <button className="btn btn-primary btn-sm ml-2">
+                Follow 
+                <i className="fas fa-user-plus"></i>
+              </button>)}
             </h2>
 
             <div className="profile-nav nav nav-tabs pt-2 mb-4 nav-fill">
