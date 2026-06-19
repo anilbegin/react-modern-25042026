@@ -18,12 +18,12 @@ function Profile() {
       profileAvatar: "https://gravatar.com/avatar/placeholder?s=128",
       isFollowing: false,
       counts: {
-        followerCount: '..', followingCount: '..', postCount: '..'
+        followerCount: 0, followingCount: 0, postCount: 0
       }
     }
   })
   
-  // Profile Data fetch
+  // FETCH PROFILE DATA
   useEffect(() => {
     const ourRequest = new AbortController()
     async function loadProfile() {
@@ -49,6 +49,69 @@ function Profile() {
     return () => ourRequest.abort()
   } , [username])
 
+  // FOLLOW USER
+  useEffect(() => {
+    if(state.startFollowingRequestCount) {
+      setState(draft => {
+        draft.followActionLoading = true
+      })
+
+      const ourRequest = new AbortController()
+
+      async function followRequest() {
+        try {
+          const response = Axios.post(`/addFollow/${state.profileData.profileUsername}`, {
+            token: appState.user.token
+          }, {
+            signal: ourRequest.signal
+          })
+          setState(draft => {
+            draft.profileData.isFollowing = true
+            draft.profileData.counts.followerCount++
+            draft.followActionLoading = false
+          })
+        } catch (e) {
+          console.log('there was a problem.')
+        }
+      }
+      followRequest()
+
+      return () => ourRequest.abort()
+    }
+  }, [state.startFollowingRequestCount])
+
+  // UNFOLLOW USER
+  useEffect(() => {
+    if(state.stopFollowingRequestCount) {
+      setState(draft => {
+        draft.followActionLoading = true
+      })
+
+      const ourRequest = new AbortController()
+
+      function unfollowRequest() {
+        try {
+          const response = Axios.post(`/removeFollow/${state.profileData.profileUsername}`, {
+            token: appState.user.token
+          }, {
+            signal: ourRequest.signal
+          })
+          setState(draft => {
+            draft.profileData.isFollowing = false
+            draft.profileData.counts.followerCount--
+            draft.followActionLoading = false
+          })
+        } catch (e) {
+          console.log('there was a problem.')
+        }
+      }
+      unfollowRequest()
+
+      return () => ourRequest.abort()
+    }
+  }, [state.stopFollowingRequestCount])
+
+  // show the follow button Conditions that should to be TRUE
   function showFollowButton() {
     if(appState.loggedIn &&
       appState.user.username != state.profileData.profileUsername &&
@@ -58,6 +121,32 @@ function Profile() {
       return true
     }
     return false
+  }
+
+  // show the Unfollow button Conditions that should to be TRUE
+  function showUnfollowButton() {
+    if(appState.loggedIn &&
+      appState.user.username != state.profileData.profileUsername &&
+      state.profileData.isFollowing &&
+      state.profileData.profileUsername != '...'
+    ) {
+      return true
+    }
+    return false
+  }
+
+  // trigger useEffect for Axios request - Start following User
+  function startFollowing() {
+    setState(draft => {
+      draft.startFollowingRequestCount++
+    })
+  }
+
+  // trigger useEffect for Axios request -  Unfollow User/Stop following User
+  function stopFollowing() {
+    setState(draft => {
+      draft.stopFollowingRequestCount++
+    })
   }
 
   return (
@@ -70,9 +159,18 @@ function Profile() {
             <h2>
               <img className="avatar-small" src={state.profileData.profileAvatar} /> {state.profileData.profileUsername}
               {showFollowButton() && (
-                <button className="btn btn-primary btn-sm ml-2">
+                <button onClick={startFollowing}
+                      disabled={state.followActionLoading}
+                      className="btn btn-primary btn-sm ml-2">
                 Follow 
                 <i className="fas fa-user-plus"></i>
+              </button>)}
+              {showUnfollowButton() && (
+                <button onClick={stopFollowing}
+                      disabled={state.followActionLoading}
+                      className="btn btn-danger btn-sm ml-2">
+                Stop Following {' '}
+                <i className="fas fa-user-times"></i>
               </button>)}
             </h2>
 
