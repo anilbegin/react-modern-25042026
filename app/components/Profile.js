@@ -60,7 +60,7 @@ function Profile() {
 
       async function followRequest() {
         try {
-          const response = Axios.post(`/addFollow/${state.profileData.profileUsername}`, {
+          const response = await Axios.post(`/addFollow/${state.profileData.profileUsername}`, {
             token: appState.user.token
           }, {
             signal: ourRequest.signal
@@ -89,9 +89,9 @@ function Profile() {
 
       const ourRequest = new AbortController()
 
-      function unfollowRequest() {
+      async function unfollowRequest() {
         try {
-          const response = Axios.post(`/removeFollow/${state.profileData.profileUsername}`, {
+          const response = await Axios.post(`/removeFollow/${state.profileData.profileUsername}`, {
             token: appState.user.token
           }, {
             signal: ourRequest.signal
