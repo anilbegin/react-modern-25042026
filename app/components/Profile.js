@@ -47,7 +47,7 @@ function Profile() {
     }
     loadProfile()
     return () => ourRequest.abort()
-  } , [username])
+  } , [username, appState.user.token])
 
   // FOLLOW USER
   useEffect(() => {
