@@ -1,9 +1,11 @@
 import React, {useEffect, useContext} from 'react'
 import Page from './Page'
 import Axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { useParams, NavLink, Routes, Route } from 'react-router-dom'
 import { useImmer } from 'use-immer'
 import ProfilePosts from './ProfilePosts'
+import ProfileFollowers from './ProfileFollowers'
+import ProfileFollowing from './ProfileFollowing'
 import StateContext from '../StateContext'
 
 function Profile() {
@@ -175,18 +177,22 @@ function Profile() {
             </h2>
 
             <div className="profile-nav nav nav-tabs pt-2 mb-4 nav-fill">
-              <a href="#" className="nav-item nav-link active">
+              <NavLink to={"/profile/" + state.profileData.profileUsername} end className="nav-item nav-link">
                 Posts: {state.profileData.counts.postCount}
-              </a>
-              <a href="#" className="nav-item nav-link">
+              </NavLink>
+              <NavLink to={"/profile/" + state.profileData.profileUsername + "/followers"} className="nav-item nav-link">
                 Followers: {state.profileData.counts.followerCount}
-              </a>
-              <a href="#" className="nav-item nav-link">
+              </NavLink>
+              <NavLink to={"/profile/" + state.profileData.profileUsername + "/following"} className="nav-item nav-link">
                 Following: {state.profileData.counts.followingCount}
-              </a>
+              </NavLink>
             </div>
 
-          <ProfilePosts />  
+            <Routes>
+                <Route path="" element={<ProfilePosts />} />
+                <Route path="followers" element={<ProfileFollowers />} />
+                <Route path="following" element={<ProfileFollowing />} />
+            </Routes>    
           </div>  
         </div>
       </main>
