@@ -40,7 +40,9 @@ function ProfileFollowing() {
           </Link>
         )
       })}
-      
+      {!Boolean(following.length) &&
+        <p className="text-muted ml-4 font-italic">User is not following anyone yet.</p>
+      }
     </div>
   )
 }

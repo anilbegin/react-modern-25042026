@@ -43,7 +43,9 @@ function ProfilePosts() {
           </Link>
         )
       })}
-      
+      {!Boolean(posts.length) &&
+        <p className="text-muted ml-4 font-italic">User has not created any posts.</p>
+      }
     </div>
   )
 }
