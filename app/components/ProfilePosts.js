@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Axios from 'axios'
 import { useParams, Link } from "react-router-dom"
-
+import StateContext from '../StateContext'
 import LoadingDotsIcon from "./LoadingDotsIcon"
 
 function ProfilePosts() {
+  const appState = useContext(StateContext)
   const { username } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [posts, setPosts] = useState([])
@@ -29,6 +30,13 @@ function ProfilePosts() {
     return () => ourRequest.abort()
   } , [username])
 
+  function isOwnProfile() {
+    if(appState.loggedIn) {
+      return appState.user.username == username
+    }
+    return false
+  }
+
   if(isLoading) return <LoadingDotsIcon />
 
   return (
@@ -44,7 +52,10 @@ function ProfilePosts() {
         )
       })}
       {!Boolean(posts.length) &&
-        <p className="text-muted ml-4 font-italic">User has not created any posts.</p>
+        <p className="text-muted ml-4 font-italic">
+          {isOwnProfile() ? "You have not created any posts yet." : 
+                              "User has not created any posts."}
+        </p>
       }
     </div>
   )
