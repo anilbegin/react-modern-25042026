@@ -6,6 +6,7 @@ import Axios from "axios"
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"  
 import LoadingDotsIcon from "./LoadingDotsIcon"
+import Post from "./Post"
 
 function Home() {
   const appState = useContext(StateContext)
@@ -62,15 +63,7 @@ function Home() {
             <h3 className="text-center mb-4">Hello <strong>{appState.user.username}</strong>, latest posts from those you follow</h3>
             <div className="list-group">
               {state.feed.map(function(post) {
-                const date = new Date(post.createdDate) 
-                const dateFormatted = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                return (
-                  <Link key={post._id} to={`/post/${post._id}`} className="list-group-item list-group-item-action">
-                    <img className="avatar-tiny" src={post.author.avatar} />{' '}
-                    <strong className="mr-2">{post.title}</strong>
-                    <span className="text-muted small">by {post.author.username} on {dateFormatted} </span>
-                  </Link>
-                )
+                return <Post post={post} key={post._id} />
               })}
             </div>
           </div>

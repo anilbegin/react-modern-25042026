@@ -3,6 +3,7 @@ import Axios from 'axios'
 import { useParams, Link } from "react-router-dom"
 import StateContext from '../StateContext'
 import LoadingDotsIcon from "./LoadingDotsIcon"
+import Post from "./Post"
 
 function ProfilePosts() {
   const appState = useContext(StateContext)
@@ -42,14 +43,7 @@ function ProfilePosts() {
   return (
     <div className="list-group">
       {posts.map(function(post) {
-        const date = new Date(post.createdDate) 
-        const dateFormatted = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-        return (
-          <Link key={post._id} to={`/post/${post._id}`} className="list-group-item list-group-item-action">
-            <strong className="mr-2">{post.title}</strong>
-            <span className="text-muted small">on {dateFormatted} </span>
-          </Link>
-        )
+        return <Post key={post._id} post={post} noAuthor={true} />
       })}
       {!Boolean(posts.length) &&
         <p className="text-muted ml-4 font-italic">
