@@ -26,9 +26,9 @@ function HeaderLoggedIn() {
           </a>
           <Tooltip id="search" />
           {" "}
-          <span data-tooltip-auto-close='2000' data-tooltip-id="chat" data-tooltip-content="Chat" data-tooltip-place="bottom-start" data-tooltip-offset="19"  className="mr-2 header-chat-icon text-danger">
+          <span data-tooltip-auto-close='2000' data-tooltip-id="chat" data-tooltip-content="Chat" data-tooltip-place="bottom-start" data-tooltip-offset="19"  className="mr-2 header-chat-icon text-white">
             <i className="fas fa-comment"></i>
-            <span className="chat-count-badge text-white">3</span>
+            <span className="chat-count-badge text-white"></span>
           </span>
           <Tooltip id="chat" />
           {" "}
