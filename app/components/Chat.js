@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useRef } from "react"
+import {useImmer} from 'use-immer'
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"
 
@@ -6,12 +7,30 @@ function Chat() {
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
   const chatField = useRef(null)
+  const [state, setState] = useImmer({
+    fieldValue: ''
+  })
 
   useEffect(() => {
     if(appState.isChatOpen)
      chatField.current.focus()
 
   }, [appState.isChatOpen])
+
+  function handleChatField(e) {
+    const value = e.target.value
+    setState(draft => {
+      draft.fieldValue = value
+    })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    alert(state.fieldValue)
+    setState(draft => {
+      draft.fieldValue = ""
+    })
+  }
 
   return (
     <div id="chat-wrapper" 
@@ -45,9 +64,9 @@ function Chat() {
             </div>
       </div>
           
-      <form id="chatForm" className="chat-form border-top p-2">
+      <form onSubmit={handleSubmit} id="chatForm" className="chat-form border-top p-2">
         <div className="d-flex">
-          <input ref={chatField} type="text" className="chat-field flex-grow-1" placeholder="Type a message…" autoComplete="off" />
+          <input value={state.fieldValue} onChange={handleChatField} ref={chatField} type="text" className="chat-field flex-grow-1" placeholder="Type a message…" autoComplete="off" />
           <button className="btn btn-primary ml-2">
             <i className="fas fa-paper-plane fa-sm"></i>
           </button>
