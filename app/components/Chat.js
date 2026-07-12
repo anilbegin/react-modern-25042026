@@ -8,7 +8,8 @@ function Chat() {
   const appDispatch = useContext(DispatchContext)
   const chatField = useRef(null)
   const [state, setState] = useImmer({
-    fieldValue: ''
+    fieldValue: '',
+    chatMessages: []
   })
 
   useEffect(() => {
@@ -26,8 +27,11 @@ function Chat() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    alert(state.fieldValue)
     setState(draft => {
+      draft.chatMessages.push({message: draft.fieldValue, 
+        username: appState.user.username,
+        avatar: appState.user.avatar
+      })
       draft.fieldValue = ""
     })
   }
@@ -42,27 +46,37 @@ function Chat() {
           </span>
       </div>
       <div id="chat-log" className="chat-log">
-            <div className="chat-self">
-              <div className="chat-message">
-                <div className="chat-message-inner">Hey, how are you?</div>
-              </div>
-              <img className="chat-avatar avatar-tiny" src="https://gravatar.com/avatar/bbf83f8935b4d8c70600975d96ac33b9?s=128" />
-            </div>
+            {state.chatMessages.map(function(message, index) {
+              if(message.username == appState.user.username) {
+                return (
+                  <div className="chat-self">
+                    <div className="chat-message">
+                      <div className="chat-message-inner">{message.message}</div>
+                    </div>
+                    <img className="chat-avatar avatar-tiny" src={message.avatar} />
+                  </div>
+                )
+              }
 
-            <div className="chat-other">
-              <a href="#">
-                <img className="avatar-tiny" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" />
-              </a>
-              <div className="chat-message">
-                <div className="chat-message-inner">
-                  <a href="#">
-                    <strong>barksalot:</strong>
-                  </a>
-                  Hey, I am good, how about you?
+              return (
+              <div className="chat-other">
+                <a href="#">
+                  <img className="avatar-tiny" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" />
+                </a>
+                <div className="chat-message">
+                  <div className="chat-message-inner">
+                    <a href="#">
+                      <strong>barksalot:</strong>
+                    </a>
+                    Hey, I am good, how about you?
+                  </div>
                 </div>
-              </div>
-            </div>
-      </div>
+              </div>  
+              )
+            })}
+            
+            
+        </div>
           
       <form onSubmit={handleSubmit} id="chatForm" className="chat-form border-top p-2">
         <div className="d-flex">
