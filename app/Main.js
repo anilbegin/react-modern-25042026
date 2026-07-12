@@ -39,7 +39,8 @@ function Main() {
     },
     flashMessages : [],
     showModal : false,
-    isSearchOpen : false
+    isSearchOpen : false,
+    isChatOpen : false
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initalState)
@@ -68,6 +69,12 @@ function Main() {
       case 'closeSearch' :
         draft.isSearchOpen = false
         return    
+      case 'toggleChat' :
+        draft.isChatOpen = !draft.isChatOpen
+        return
+      case 'closeChat' :
+        draft.isChatOpen = false
+        return  
     }
   }
 
