@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useRef } from "react"
 import {useImmer} from 'use-immer'
+import { Link } from "react-router-dom"
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"
 import {io} from 'socket.io-client'
@@ -9,11 +10,13 @@ function Chat() {
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
   const chatField = useRef(null)
+  const chatLog = useRef(null)
   const [state, setState] = useImmer({
     fieldValue: '',
     chatMessages: []
   })
 
+  // FOCUS on chat INPUTFIELD when chat Window opens
   useEffect(() => {
     if(appState.isChatOpen)
      chatField.current.focus()
@@ -28,6 +31,11 @@ function Chat() {
       })
     })
   }, [])  
+
+  // PULL THE SCROLL BAR to the bottom of the chat window, on every message
+  useEffect(() => {
+    chatLog.current.scrollTop = chatLog.current.scrollHeight
+  }, [state.chatMessages])
 
   function handleChatField(e) {
     const value = e.target.value
@@ -62,7 +70,7 @@ function Chat() {
           <i className="fas fa-times-circle"></i>
           </span>
       </div>
-      <div id="chat-log" className="chat-log">
+      <div ref={chatLog} id="chat-log" className="chat-log">
             {state.chatMessages.map(function(message, index) {
               if(message.username == appState.user.username) {
                 return (
@@ -77,14 +85,14 @@ function Chat() {
 
               return (
               <div key={index} className="chat-other">
-                <a href="#">
+                <Link to={`/profile/${message.username}`}>
                   <img className="avatar-tiny" src={message.avatar} />
-                </a>
+                </Link>
                 <div className="chat-message">
                   <div className="chat-message-inner">
-                    <a href="#">
+                    <Link to={`/profile/${message.username}`}>
                       <strong>{message.username}</strong>
-                    </a>
+                    </Link>
                     {message.message}
                   </div>
                 </div>
