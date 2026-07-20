@@ -15,11 +15,15 @@ function Chat() {
     fieldValue: '',
     chatMessages: []
   })
-
-  // FOCUS on chat INPUTFIELD when chat Window opens
+  
+  // FOCUS on chat INPUT FIELD when chat Window opens
+  // also clear the unread chat count from header, if any
   useEffect(() => {
-    if(appState.isChatOpen)
-     chatField.current.focus()
+    if(appState.isChatOpen) {
+      chatField.current.focus()
+      appDispatch({type: 'clearUnreadChatCount'})
+    }
+     
 
   }, [appState.isChatOpen])
 
@@ -35,6 +39,10 @@ function Chat() {
   // PULL THE SCROLL BAR to the bottom of the chat window, on every message
   useEffect(() => {
     chatLog.current.scrollTop = chatLog.current.scrollHeight
+    // increment unread chat count only if..
+    if(state.chatMessages.length && !appState.isChatOpen) {
+      appDispatch({type: 'incrementUnreadChatCount'})
+    }
   }, [state.chatMessages])
 
   function handleChatField(e) {
