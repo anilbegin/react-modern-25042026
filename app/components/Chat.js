@@ -73,8 +73,9 @@ function Chat() {
     <div id="chat-wrapper" 
     className={"chat-wrapper shadow-lg " + 
     (appState.isChatOpen ? "chat-wrapper--is-visible" : "")}>
-      <div className="chat-title-bar">Chat 
-        <span onClick={() => appDispatch({type: 'closeChat'})} className="chat-title-bar-close">
+      <div onClick={() => appDispatch({type: 'toggleChat'})} 
+       className="chat-title-bar">Chat 
+        <span className="chat-title-bar-close">
           <i className="fas fa-times-circle"></i>
           </span>
       </div>

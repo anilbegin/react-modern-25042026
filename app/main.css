@@ -334,6 +334,8 @@ transform: translateY(0);
 
 /* Chat */
 .chat-wrapper {
+  /*making title bar visible for the user when Chat Window Closed */
+  --title-bar-height: 41px;
   position: fixed;
   z-index: 5;
   bottom: 0;
@@ -344,9 +346,9 @@ transform: translateY(0);
   backdrop-filter: blur(10px); /* Glassmorphism effect */
   display: flex;
   flex-direction: column;
-  opacity: 0;
+  opacity: 1;
   transition: all .4s ease-in-out;
-  transform: translateY(100%);
+  transform: translateY(calc(100% - var(--title-bar-height)));
   border-radius: 15px 15px 0 0; /* Rounded top corners */
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
