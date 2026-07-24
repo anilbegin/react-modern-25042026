@@ -80,6 +80,17 @@ function Chat() {
           </span>
       </div>
       <div ref={chatLog} id="chat-log" className="chat-log">
+        {/* First Welcome Message shown to user, when the Chat Window is empty */}
+          {state.chatMessages.length === 0 && (
+            <div className="chat-welcome">
+              <b>Welcome to the Public Chat!</b>
+              <p>
+                Connect with other members who are online right now.
+                Introduce yourself, ask questions, share ideas, and
+                join the conversation.
+              </p> 
+            </div>
+          )}  
             {state.chatMessages.map(function(message, index) {
               if(message.username == appState.user.username) {
                 return (

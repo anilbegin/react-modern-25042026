@@ -333,6 +333,18 @@ transform: translateY(0);
 /* End Search Overlay */
 
 /* Chat */
+/* chat Welcome helpful for newly registered users */
+.chat-welcome {
+  padding: 10px 10px;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.chat-welcome b {
+  color: #253345;
+}
+
 .chat-wrapper {
   /*making title bar visible for the user when Chat Window Closed */
   --title-bar-height: 41px;
