@@ -382,6 +382,10 @@ transform: translateY(0);
   align-items: center;
 }
 
+.chat-title-bar:hover {
+  background: radial-gradient(circle at 20% 30%, #0b315f, #35557a 60%);
+}
+
 .chat-field {
   width: 100%;
   box-sizing: border-box;
