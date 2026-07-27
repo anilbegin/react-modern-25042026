@@ -4,9 +4,9 @@ import { Link } from "react-router-dom"
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"
 import {io} from 'socket.io-client'
-const socket = io("http://localhost:8080")
 
 function Chat() {
+  const socket = useRef(null)
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
   const chatField = useRef(null)
@@ -29,11 +29,15 @@ function Chat() {
 
   // begin LISTENING for messages sent from Server
   useEffect(() => {
-    socket.on('chatFromServer', message => {
+    socket.current = io("http://localhost:8080")
+
+    socket.current.on('chatFromServer', message => {
       setState(draft => {
         draft.chatMessages.push(message)
       })
     })
+
+    return () => socket.current.disconnect()
   }, [])  
 
   // PULL THE SCROLL BAR to the bottom of the chat window, on every message
@@ -55,7 +59,7 @@ function Chat() {
   function handleSubmit(e) {
     e.preventDefault()
     // SEND CHAT message to Server
-    socket.emit("chatFromBrowser", {
+    socket.current.emit("chatFromBrowser", {
       message: state.fieldValue,
       token: appState.user.token
     })

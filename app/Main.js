@@ -17,7 +17,8 @@ import CreatePost from './components/CreatePost'
 import ViewSinglePost from './components/ViewSinglePost'
 import EditPost from './components/EditPost'
 import Search from './components/Search'
-import Chat from './components/Chat'
+//import Chat from './components/Chat'
+const Chat = React.lazy(() => import("./components/Chat"))
 import NotFound from './components/NotFound'
 import Profile from './components/Profile'
 import FlashMessages from './components/FlashMessages'
@@ -120,7 +121,7 @@ function Main() {
               <Search />
             </div>
           </CSSTransition>
-          <Chat />
+          {state.loggedIn && <Chat />}
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>  
