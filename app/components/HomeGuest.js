@@ -1,25 +1,63 @@
 import React, {useState} from "react"
 import Axios from 'axios'
+import {useImmerReducer} from 'use-immer'
 
 import Page from "./Page"
 
 function HomeGuest() {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const initialState = {
+    username: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      checkCount: 0
+    },
+    email: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      checkCount: 0
+    },
+    password: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
+    submitCount: 0
+  }
 
- async function handleRegister(e) {
-    e.preventDefault()
-    try {
-      const response = await Axios.post('/register', {
-        username : username, 
-        email : email,
-        password : password
-      })
-      console.log(response)
-    } catch (e) {
-      console.log(e)
+  function ourReducer(draft, action) {
+    switch(action.type) {
+      case "usernameImmediately":
+        draft.username.hasErrors = false
+        draft.username.value = action.value
+        return
+      case "usernameAfterDelay":
+        return
+      case "usernameUniqueResults":
+        return
+      case "emailImmediately":
+        return
+      case "emailAfterDelay":
+        return
+      case "emailUniqueResults":
+        return
+      case "passwordImmediately":
+        return
+      case "passwordAfterDelay":
+        return
+      case "submitForm":
+        return               
     }
+  }
+
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState)
+
+ function handleRegister(e) {
+    e.preventDefault()
+    
   }
   return (
     <Page title='Home'>
@@ -43,15 +81,18 @@ function HomeGuest() {
             
             <form onSubmit={handleRegister}>
               <div className="form-group">
-                <input onChange={e => setUsername(e.target.value)} className="form-control" type="text" placeholder="Username" />
+                <input onChange={e => dispatch({type: "usernameImmediately", value: e.target.value})} 
+                className="form-control" type="text" placeholder="Username" />
               </div>
 
               <div className="form-group">
-                <input onChange={e => setEmail(e.target.value)} className="form-control" type="text" placeholder="Email" />
+                <input onChange={e => dispatch({type: "emailImmediately", value: e.target.value})} 
+                className="form-control" type="text" placeholder="Email" />
               </div>
 
               <div className="form-group">
-                <input onChange={e => setPassword(e.target.value)} className="form-control" type="password" placeholder="Password" />
+                <input onChange={e => dispatch({type: "passwordImmediately", value: e.target.value})} 
+                className="form-control" type="password" placeholder="Password" />
               </div>
 
               <button className="btn btn-success btn-block btn-lg mt-3">
