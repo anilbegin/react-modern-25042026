@@ -1,7 +1,6 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import Axios from 'axios'
 import {useImmerReducer} from 'use-immer'
-
 import Page from "./Page"
 
 function HomeGuest() {
@@ -33,18 +32,46 @@ function HomeGuest() {
       case "usernameImmediately":
         draft.username.hasErrors = false
         draft.username.value = action.value
+        draft.username.isUnique = false
+        if(draft.username.value.length > 20) {
+          draft.username.hasErrors = true
+          draft.username.message = "Username cannot exceed 20 characters"
+        }
+        if(draft.username.value && !/^([a-zA-Z0-9]+)$/.test(draft.username.value)) {
+          draft.username.hasErrors = true
+          draft.username.message = "Username can only contain letters and numbers"
+        }
         return
       case "usernameAfterDelay":
+        if(draft.username.value.length < 4) {
+          draft.username.hasErrors = true
+          draft.username.message = "Username should be atleast 4 characters"
+        }
+        if(!draft.username.hasErrors) {
+          draft.username.checkCount++
+        }
         return
       case "usernameUniqueResults":
+        if(action.value) {
+          draft.username.hasErrors = true
+          draft.username.isUnique = false
+          draft.username.message = "This username is already taken"
+        } else {
+          draft.username.isUnique = true
+          draft.username.message = "This username is available"
+        }
         return
       case "emailImmediately":
+        draft.email.hasErrors = false
+        draft.email.value = action.value
         return
       case "emailAfterDelay":
         return
       case "emailUniqueResults":
         return
       case "passwordImmediately":
+        draft.password.hasErrors = false
+        draft.password.value = action.value
         return
       case "passwordAfterDelay":
         return
@@ -54,6 +81,39 @@ function HomeGuest() {
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
+
+  // WAIT 800ms after the user types to check char length
+  useEffect(() => {
+    if(state.username.value) {
+        const delay = setTimeout(() => {
+        dispatch({type: "usernameAfterDelay"})
+      }, 800)
+
+      return () => clearTimeout(delay)
+    }
+  }, [state.username.value])
+
+  // CHECK if a USERNAME already EXISTS in Database
+  useEffect(() => {
+    if(state.username.checkCount) {
+      const ourRequest = new AbortController()
+      async function checkUsernameExists() {
+        try {
+          const response = await Axios.post('/doesUsernameExist', {
+            username: state.username.value
+          }, {
+            signal: ourRequest.signal
+          })
+          console.log(response)
+          dispatch({type: "usernameUniqueResults", value: response.data})
+        } catch (e) {
+          console.log('there was a problem')
+        }
+      }
+      checkUsernameExists()
+      return () => ourRequest.abort()
+    }
+  }, [state.username.checkCount])
 
  function handleRegister(e) {
     e.preventDefault()
@@ -82,7 +142,23 @@ function HomeGuest() {
             <form onSubmit={handleRegister}>
               <div className="form-group">
                 <input onChange={e => dispatch({type: "usernameImmediately", value: e.target.value})} 
-                className="form-control" type="text" placeholder="Username" />
+                className={"form-control " + 
+                (state.username.hasErrors 
+                      ? "is-invalid"
+                      : state.username.isUnique
+                      ? "is-valid"
+                      : "")}
+                      type="text" placeholder="Username" />
+                {state.username.hasErrors && (
+                  <div className="invalid-feedback">
+                  {state.username.message}
+                  </div>
+                )}
+                {!state.username.hasErrors && state.username.isUnique && (
+                  <div className="valid-feedback">
+                   {state.username.message}
+                  </div>   
+                )}
               </div>
 
               <div className="form-group">
