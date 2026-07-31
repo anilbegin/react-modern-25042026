@@ -66,6 +66,10 @@ function HomeGuest() {
         draft.email.value = action.value
         return
       case "emailAfterDelay":
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.value)) {
+          draft.email.hasErrors = true
+          draft.email.message = "Please provide a valid email address"
+        }
         return
       case "emailUniqueResults":
         return
@@ -92,6 +96,17 @@ function HomeGuest() {
       return () => clearTimeout(delay)
     }
   }, [state.username.value])
+
+  // WAIT 800ms after the user types into the EMAIL field
+  useEffect(() => {
+    if(state.email.value) {
+      const delay = setTimeout(() => {
+        dispatch({type: "emailAfterDelay"})
+      }, 800)
+
+      return () => clearTimeout(delay)
+    }
+  }, [state.email.value])  
 
   // CHECK if a USERNAME already EXISTS in Database
   useEffect(() => {
@@ -163,7 +178,13 @@ function HomeGuest() {
 
               <div className="form-group">
                 <input onChange={e => dispatch({type: "emailImmediately", value: e.target.value})} 
-                className="form-control" type="text" placeholder="Email" />
+                className={"form-control " + (state.email.hasErrors 
+                  ? "is-invalid" : "")} type="text" placeholder="Email" />
+                {state.email.hasErrors && (
+                  <div className="invalid-feedback">
+                    {state.email.message}
+                  </div>
+                )}  
               </div>
 
               <div className="form-group">
