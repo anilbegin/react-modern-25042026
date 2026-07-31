@@ -63,6 +63,7 @@ function HomeGuest() {
         return
       case "emailImmediately":
         draft.email.hasErrors = false
+        draft.email.isUnique = false
         draft.email.value = action.value
         return
       case "emailAfterDelay":
@@ -70,8 +71,19 @@ function HomeGuest() {
           draft.email.hasErrors = true
           draft.email.message = "Please provide a valid email address"
         }
+        if(!draft.email.hasErrors) {
+          draft.email.checkCount++
+        }
         return
       case "emailUniqueResults":
+        if(action.value) {
+          draft.email.hasErrors = true
+          draft.email.isUnique = false
+          draft.email.message = "This email is already in use"
+        } else {
+          draft.email.isUnique = true
+          draft.email.message = "This email is available"
+        }
         return
       case "passwordImmediately":
         draft.password.hasErrors = false
@@ -130,6 +142,28 @@ function HomeGuest() {
     }
   }, [state.username.checkCount])
 
+  // CHECK if the EMAIL alreadt EXISTS in Database
+  useEffect(() => {
+    if(state.email.checkCount) {
+      const ourRequest = new AbortController()
+      async function checkEmailExists() {
+        try {
+          const response = await Axios.post('/doesEmailExist', {
+            email: state.email.value
+          }, {
+            signal: ourRequest.signal
+          })
+          console.log(response)
+          dispatch({type: "emailUniqueResults", value: response.data})
+        } catch (e) {
+          console.log('there was a problem')
+        }
+      }
+      checkEmailExists()
+      return () => ourRequest.abort()
+    }
+  }, [state.email.checkCount])
+
  function handleRegister(e) {
     e.preventDefault()
     
@@ -179,12 +213,20 @@ function HomeGuest() {
               <div className="form-group">
                 <input onChange={e => dispatch({type: "emailImmediately", value: e.target.value})} 
                 className={"form-control " + (state.email.hasErrors 
-                  ? "is-invalid" : "")} type="text" placeholder="Email" />
+                  ? "is-invalid"
+                  : state.email.isUnique
+                  ? "is-valid" 
+                  : "")} type="text" placeholder="Email" />
                 {state.email.hasErrors && (
                   <div className="invalid-feedback">
                     {state.email.message}
                   </div>
                 )}  
+                {!state.email.hasErrors && state.email.isUnique && (
+                  <div className="valid-feedback">
+                   {state.email.message}
+                  </div>   
+                )}
               </div>
 
               <div className="form-group">
