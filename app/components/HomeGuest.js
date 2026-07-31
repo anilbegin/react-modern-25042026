@@ -22,7 +22,8 @@ function HomeGuest() {
     password: {
       value: "",
       hasErrors: false,
-      message: ""
+      message: "",
+      isValid: false
     },
     submitCount: 0
   }
@@ -88,8 +89,20 @@ function HomeGuest() {
       case "passwordImmediately":
         draft.password.hasErrors = false
         draft.password.value = action.value
+        draft.password.isValid = false
+        if(draft.password.value.length > 20) {
+          draft.password.hasErrors = true
+          draft.password.message = "Password cannot exceed 20 characters"
+        }
         return
       case "passwordAfterDelay":
+        if(draft.password.value.length < 6) {
+          draft.password.hasErrors = true
+          draft.password.message = "Password cannot be less then 6 characters"
+        }
+        if(!draft.password.hasErrors) 
+          draft.password.isValid = true
+        
         return
       case "submitForm":
         return               
@@ -120,6 +133,17 @@ function HomeGuest() {
     }
   }, [state.email.value])  
 
+  // WAIT 1000s before checking If PASSWORD is atleast 6 characters
+  useEffect(() => {
+    if(state.password.value) {
+      const delay = setTimeout(() => {
+        dispatch({type: "passwordAfterDelay"})
+      }, 1000)
+
+      return () => clearTimeout(delay)
+    }
+  }, [state.password.value])
+
   // CHECK if a USERNAME already EXISTS in Database
   useEffect(() => {
     if(state.username.checkCount) {
@@ -142,7 +166,7 @@ function HomeGuest() {
     }
   }, [state.username.checkCount])
 
-  // CHECK if the EMAIL alreadt EXISTS in Database
+  // CHECK if the EMAIL already EXISTS in Database
   useEffect(() => {
     if(state.email.checkCount) {
       const ourRequest = new AbortController()
@@ -231,9 +255,17 @@ function HomeGuest() {
 
               <div className="form-group">
                 <input onChange={e => dispatch({type: "passwordImmediately", value: e.target.value})} 
-                className="form-control" type="password" placeholder="Password" />
+                className={"form-control " + (
+                  state.password.hasErrors ? "is-invalid" 
+                  : state.password.isValid ? "is-valid" : "")}
+                type="password" placeholder="Password" />
+                {state.password.hasErrors && (
+                  <div className="invalid-feedback">
+                    {state.password.message}
+                  </div>
+                )}
               </div>
-
+              
               <button className="btn btn-success btn-block btn-lg mt-3">
                 Get Started
               </button>
