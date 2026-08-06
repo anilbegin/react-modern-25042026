@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import Axios from 'axios'
 import {useImmerReducer} from 'use-immer'
 import Page from "./Page"
+import DispatchContext from '../DispatchContext'
 
 function HomeGuest() {
+  const appDispatch = useContext(DispatchContext)
+
   const initialState = {
     username: {
       value: "",
@@ -105,6 +108,20 @@ function HomeGuest() {
         
         return
       case "submitForm":
+        if(!draft.username.hasErrors && draft.username.isUnique &&
+          !draft.email.hasErrors && draft.email.isUnique &&
+          !draft.password.hasErrors
+        ) {
+        //  console.log("Form submit!!")
+          draft.submitCount++
+        }
+        // else { // Used for Debugging
+        //   console.log(`usernameErrors: ${draft.username.hasErrors}\n
+        //     usernameisUnique: ${draft.username.isUnique}\n
+        //     emailErrors: ${draft.email.hasErrors}\n
+        //     emailisUnique: ${draft.email.isUnique}\n
+        //     passwordErrors: ${draft.password.hasErrors}\n`)
+        // }
         return               
     }
   }
@@ -155,7 +172,7 @@ function HomeGuest() {
           }, {
             signal: ourRequest.signal
           })
-          console.log(response)
+          //console.log(response)
           dispatch({type: "usernameUniqueResults", value: response.data})
         } catch (e) {
           console.log('there was a problem')
@@ -177,7 +194,7 @@ function HomeGuest() {
           }, {
             signal: ourRequest.signal
           })
-          console.log(response)
+          //console.log(response)
           dispatch({type: "emailUniqueResults", value: response.data})
         } catch (e) {
           console.log('there was a problem')
@@ -188,9 +205,39 @@ function HomeGuest() {
     }
   }, [state.email.checkCount])
 
+  // FINAL REGISTER USER, SEND REQUEST TO BACKEND
+  useEffect(() => {
+    if(state.submitCount) {
+      const ourRequest = new AbortController()
+      async function registerUser() {
+        try {
+          const response = await Axios.post("/register", {
+            username: state.username.value,
+            email: state.email.value,
+            password: state.password.value
+          }, {
+            signal: ourRequest.signal
+          })
+          console.log(response) // check console OP
+          appDispatch({type: "login", data: response.data})
+          appDispatch({type: "flashMessage", value: "Congrats! Welcome to your new Account."})
+
+        } catch (e) {
+          console.log('there was a problem')
+        }
+      }
+      registerUser()
+
+      return () => ourRequest.abort()
+    }
+  }, [state.submitCount])
+
  function handleRegister(e) {
     e.preventDefault()
-    
+    dispatch({type: "usernameAfterDelay"})
+    dispatch({type: "emailAfterDelay"})
+    dispatch({type: "passwordAfterDelay"})
+    dispatch({type: "submitForm"})
   }
   return (
     <Page title='Home'>
