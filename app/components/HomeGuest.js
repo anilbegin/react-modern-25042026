@@ -133,7 +133,7 @@ function HomeGuest() {
     if(state.username.value) {
         const delay = setTimeout(() => {
         dispatch({type: "usernameAfterDelay"})
-      }, 800)
+      }, 1000)
 
       return () => clearTimeout(delay)
     }
@@ -144,7 +144,7 @@ function HomeGuest() {
     if(state.email.value) {
       const delay = setTimeout(() => {
         dispatch({type: "emailAfterDelay"})
-      }, 800)
+      }, 1400)
 
       return () => clearTimeout(delay)
     }
@@ -155,7 +155,7 @@ function HomeGuest() {
     if(state.password.value) {
       const delay = setTimeout(() => {
         dispatch({type: "passwordAfterDelay"})
-      }, 1000)
+      }, 1400)
 
       return () => clearTimeout(delay)
     }
