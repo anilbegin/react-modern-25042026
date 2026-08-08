@@ -37,6 +37,13 @@ function LoginModal() {
       document.body.style.overflow = "hidden" // prevent scroll
     }
 
+    // to prevent the loginModal from re-using state data
+    // also need to make the input fields controlled
+    if(!appState.showModal) { 
+      setUsername('')
+      setPassword('')
+    }
+
     return () => {
       document.removeEventListener("keydown", handleEsc)
       document.body.style.overflow = "auto"
@@ -64,11 +71,11 @@ function LoginModal() {
         <h3 className="mb-3">Sign In</h3>
 
         <form onSubmit={handleLogin}>
-          <input onChange={e => setUsername(e.target.value)} autoFocus type="text" placeholder="Username"
+          <input value={username} onChange={e => setUsername(e.target.value)} autoFocus type="text" placeholder="Username"
             className="form-control mb-2"
           />
 
-          <input onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"
+          <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"
             className="form-control mb-3"
           />
 
