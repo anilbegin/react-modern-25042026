@@ -43,13 +43,19 @@ function LoginModal() {
     }
   }, [appState.showModal])
 
+  function handleOverlayMouseDown(e) {
+    if(e.target === e.currentTarget) {
+      appDispatch({type: "closeModal"})
+    }
+  }
+
   if (!appState.showModal) return null
 
   return (
-    <div className="modal-overlay" onClick={() => appDispatch({type: 'closeModal'})}>
+    <div className="modal-overlay" onMouseDown={handleOverlayMouseDown}>
       <div
         className="modal-content"
-        onClick={(e) => e.stopPropagation()} // prevent close when clicking inside
+        onClick={(e) => e.stopPropagation()} // prevent close when clicking anywhere inside modal
       >
         <button className="modal-close" onClick={() => appDispatch({type: 'closeModal'})}>
           &times;
