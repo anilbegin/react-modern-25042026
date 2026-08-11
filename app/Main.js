@@ -39,6 +39,7 @@ function Main() {
       username : localStorage.getItem('xUsername')
     },
     flashMessages : [],
+    error: false,
     showModal : false,
     isSearchOpen : false,
     isChatOpen : false,
@@ -58,6 +59,7 @@ function Main() {
         return
       case 'flashMessage' :
         draft.flashMessages.push(action.value)
+        draft.error = action.error
         return
       case 'openModal' :
         draft.showModal = true
@@ -103,7 +105,7 @@ function Main() {
       <DispatchContext.Provider value={dispatch}>  
         <BrowserRouter>
           <Header />
-          <FlashMessages messages={state.flashMessages} />
+          <FlashMessages error={state.error} messages={state.flashMessages} />
           <Routes>
             <Route path='/' element={state.loggedIn ? <Home /> : <HomeGuest />} />
             <Route path='/create-post' element={<CreatePost />} />

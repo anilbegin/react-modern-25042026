@@ -479,7 +479,7 @@ transform: translateY(0);
 .floating-alert {
   display: none;
   position: absolute;
-  z-index: 999;
+  z-index: 5000;
   top: 38px;
   left: 50%;
   transform: translateX(-50%);

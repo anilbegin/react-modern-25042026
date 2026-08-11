@@ -19,7 +19,8 @@ function LoginModal() {
         appDispatch({type: 'flashMessage', value: 'You logged in successfully!'})
         appDispatch({type: 'closeModal'})
       } else {
-        alert('Invalid Username/Password')
+        appDispatch({type: 'flashMessage', 
+          value: 'Invalid Username/Password!', error: true})
       }
     } catch (e) {
       console.log(e)

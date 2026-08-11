@@ -92,7 +92,8 @@ function EditPost() {
         if(response.data) {
           dispatch({type: 'fetchComplete', value: response.data})
           if(!appState.loggedIn || appState.user.username != response.data.author.username) {
-            appDispatch({type: 'flashMessage', value: 'You do not have permission!'})
+            appDispatch({type: 'flashMessage', 
+              value: 'You do not have permission!', error: true})
             navigate('/')
           }        
         } else {
@@ -123,11 +124,13 @@ function EditPost() {
           if(response.data == 'success') {
             appDispatch({type: 'flashMessage', value: 'Post Updated Successfully.'})
           //  navigate(`/post/${state.id}`)
-          } else {
-            appDispatch({type: 'flashMessage', value: 'Update Failed! Please try again.'})
           }
         } catch (e) {
           console.log(e)
+
+          dispatch({type: 'saveRequestFinished'})
+          appDispatch({type: 'flashMessage', 
+            value: 'Update Failed! Please try again later.', error: true})
         }
       }
       updatePost()
