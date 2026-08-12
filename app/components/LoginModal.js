@@ -11,6 +11,16 @@ function LoginModal() {
 
   async function handleLogin(e) {
     e.preventDefault()
+
+    // Prevent Sending Axios request if Username/Password field is empty
+    if(!username.trim || !password.trim()) {
+      appDispatch({type: "flashMessage",
+        value: "Please enter both username and password",
+        error: true
+      })
+      return
+    }
+
     try {
       const response = await Axios.post('/login', {username, password})
       if(response.data) {
