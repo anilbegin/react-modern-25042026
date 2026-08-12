@@ -1,5 +1,5 @@
 import React from "react"
-
+import { Link } from "react-router-dom"
 import Page from "./Page"
 
 function About() {
@@ -35,9 +35,9 @@ function About() {
           </div>
 
           <div className="text-center mt-4">
-            <a href="create-post.html" className="btn btn-success mr-2">
+            <Link to="/" className="btn btn-success mr-2">
               <i className="fas fa-pen mr-1"></i> Start Writing
-            </a>
+            </Link>
           </div>
 
         </div>
