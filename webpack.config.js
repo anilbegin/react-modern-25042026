@@ -30,7 +30,8 @@ module.exports = {
           }
         }
       },
-      /* the CSS Rule for adding Markdown Toolbar in CreatePost.js */
+      /* the CSS Rule for adding Markdown 
+      Toolbar in CreatePost.js */
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"]
