@@ -103,22 +103,25 @@ function Main() {
   // on first render of Main component -
   // Check if TOKEN is expired
   useEffect(() => {
-    const ourRequest = new AbortController()
-    async function checkTokenExpiry() {
-      const response = await Axios.post('/checkToken', {
-        token: state.user.token
-      }, {
-        signal: ourRequest.signal
-      })
-      console.log(response)
-      if(!response.data) {
-        dispatch({type: 'logout'})
-        dispatch({type: 'flashMessage', value: 'Your session has expired, Please Login again..'})
+    if(state.loggedIn) {
+      const ourRequest = new AbortController()
+      async function checkTokenExpiry() {
+        const response = await Axios.post('/checkToken', {
+          token: state.user.token
+        }, {
+          signal: ourRequest.signal
+        })
+      //  console.log(response)
+        if(!response.data) {
+          dispatch({type: 'logout'})
+          dispatch({type: 'flashMessage', 
+            value: 'Your session has expired, Please Login again..'})
+        }
       }
-    }
-    checkTokenExpiry()
+      checkTokenExpiry()
 
-    return () => ourRequest.abort()
+      return () => ourRequest.abort()
+    }
   }, [])
 
   return (
