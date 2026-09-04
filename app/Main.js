@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Axios from 'axios'
 import { CSSTransition } from 'react-transition-group'
 import { useImmerReducer } from 'use-immer'
-Axios.defaults.baseURL = 'http://localhost:8080'
+Axios.defaults.baseURL = process.env.BACKENDURL || ""
 
 // my components
 import Header from './components/Header'
@@ -13,9 +13,11 @@ import Home from './components/Home'
 import HeaderLoggedIn from './components/HeaderLoggedIn'
 // import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
-import CreatePost from './components/CreatePost'
+//import CreatePost from './components/CreatePost'
+const CreatePost = React.lazy(() => import("./components/CreatePost"))
 import ViewSinglePost from './components/ViewSinglePost'
-import EditPost from './components/EditPost'
+//import EditPost from './components/EditPost'
+const EditPost = React.lazy(() => import("./components/EditPost"))
 import Search from './components/Search'
 //import Chat from './components/Chat'
 const Chat = React.lazy(() => import("./components/Chat"))
