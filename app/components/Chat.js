@@ -58,6 +58,12 @@ function Chat() {
 
   function handleSubmit(e) {
     e.preventDefault()
+
+    // DON'T ALLOW EMPTY or whitespace-only messages
+    if (!state.fieldValue.trim()) {
+      return
+    }
+
     // SEND CHAT message to Server
     socket.current.emit("chatFromBrowser", {
       message: state.fieldValue,
@@ -130,7 +136,9 @@ function Chat() {
       <form onSubmit={handleSubmit} id="chatForm" className="chat-form border-top p-2">
         <div className="d-flex">
           <input value={state.fieldValue} onChange={handleChatField} ref={chatField} type="text" className="chat-field flex-grow-1" placeholder="Type a message…" autoComplete="off" />
-          <button className="btn btn-primary ml-2">
+          <button 
+          disabled={!state.fieldValue.trim()}
+          className="btn btn-primary ml-2">
             <i className="fas fa-paper-plane fa-sm"></i>
           </button>
         </div>

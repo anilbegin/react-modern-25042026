@@ -10,7 +10,7 @@ Axios.defaults.baseURL = process.env.BACKENDURL || ""
 import Header from './components/Header'
 import HomeGuest from './components/HomeGuest'
 import Home from './components/Home'
-import HeaderLoggedIn from './components/HeaderLoggedIn'
+// import HeaderLoggedIn from './components/HeaderLoggedIn'
 // import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
 //import CreatePost from './components/CreatePost'
