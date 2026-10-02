@@ -58,6 +58,9 @@ function Main() {
         return
       case 'logout' :
         draft.loggedIn = false
+        draft.user.avatar = null
+        draft.user.token = null
+        draft.user.username = null
         return
       case 'flashMessage' :
         draft.flashMessages.push(action.value)
