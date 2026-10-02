@@ -91,6 +91,7 @@ function CreatePost() {
             console.log('There was a problem')
           }
         } catch (e) {
+          // User recently logged out but still on CreatePost page somehow
           // Faulty Network Connection
           dispatch({type: 'saveRequestFinished'})
           appDispatch({type: 'flashMessage',
