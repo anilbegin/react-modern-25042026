@@ -10,6 +10,7 @@ Axios.defaults.baseURL = process.env.BACKENDURL || ""
 import Header from './components/Header'
 import HomeGuest from './components/HomeGuest'
 import Home from './components/Home'
+import ProtectedRoute from './components/ProtectedRoute'
 // import HeaderLoggedIn from './components/HeaderLoggedIn'
 // import HeaderLoggedOut from './components/HeaderLoggedOut'
 import LoginModal from './components/LoginModal'
@@ -137,9 +138,13 @@ function Main() {
           <FlashMessages error={state.error} messages={state.flashMessages} />
           <Routes>
             <Route path='/' element={state.loggedIn ? <Home /> : <HomeGuest />} />
-            <Route path='/create-post' element={<CreatePost />} />
+            <Route path='/create-post' element={<ProtectedRoute>
+              <CreatePost />
+            </ProtectedRoute>} />
             <Route path='/post/:id' element={<ViewSinglePost />} />
-            <Route path='/post/:id/edit' element={<EditPost />} />
+            <Route path='/post/:id/edit' element={<ProtectedRoute>
+              <EditPost />
+            </ProtectedRoute>} />
             <Route path='/profile/:username/*' element={<Profile />} />
             <Route path='/about' element={<About />} />
             <Route path='/terms' element={<Terms />} />
