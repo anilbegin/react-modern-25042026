@@ -3,6 +3,7 @@ import Page from './Page'
 import Axios from 'axios'
 import { useParams, NavLink, Routes, Route } from 'react-router-dom'
 import { useImmer } from 'use-immer'
+import NotFound from './NotFound'
 import ProfilePosts from './ProfilePosts'
 //import ProfileFollowers from './ProfileFollowers'
 //import ProfileFollowing from './ProfileFollowing'
@@ -16,6 +17,7 @@ function Profile() {
     followActionLoading: false,
     startFollowingRequestCount: 0,
     stopFollowingRequestCount: 0,
+    profileExists: true,
     profileData: {
       profileUsername: "...",
       profileAvatar: "https://gravatar.com/avatar/placeholder?s=128",
@@ -35,17 +37,22 @@ function Profile() {
           token: appState.user.token
         }, { signal : ourRequest.signal })
 
-        if(response.data) {
-        //  console.log(response.data)
-        //  setProfileData(response.data)
+        if(response.data === false) {
+         setState(draft => {
+          draft.profileExists = false
+         })  
+         return
+        }
+
         setState(draft => {
           draft.profileData = response.data
+          draft.profileExists = true
         })
-        } else {
-          console.log('Invalid Username')
-        }
       } catch (e) {
         console.log(e)
+        setState(draft => {
+          draft.profileExists = false
+        })
       }
     }
     loadProfile()
@@ -152,6 +159,8 @@ function Profile() {
     })
   }
 
+  if(!state.profileExists) return <NotFound />
+  
   return (
     <Page title={state.profileData.profileUsername == '...' ?
      'Profile..' : appState.user.username == state.profileData.profileUsername ?
