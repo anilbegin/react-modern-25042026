@@ -202,6 +202,7 @@ function Profile() {
                 <Route path="" element={<ProfilePosts />} />
                 <Route path="followers" element={<ProfileFollow tab='followers' />} />
                 <Route path="following" element={<ProfileFollow tab='following' />} />
+                <Route path="*" element={<NotFound />} />
                { /* <Route path="followers" element={<ProfileFollowers />} /> */}
                { /* <Route path="following" element={<ProfileFollowing />} /> */}
 
