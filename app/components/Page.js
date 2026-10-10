@@ -6,9 +6,9 @@ function Page(props) {
     window.scrollTo(0, 0)
   }, [props.title])
   return (
-    <>
+    <div className="main">
      {props.children} 
-    </>
+    </div>
   )
 }
 

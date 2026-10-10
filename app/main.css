@@ -1156,3 +1156,19 @@ border: 1px solid #cbd5e1;
     opacity: 1;
   }
 }
+
+/* stick footer to the bottom of the page */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.footer {
+  height: auto;
+  
+}
